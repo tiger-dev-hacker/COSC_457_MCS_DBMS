@@ -1,3 +1,5 @@
+
+
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.font.*;
@@ -28,7 +30,7 @@ public class HREmployee extends JFrame {
 	private JTextField mob; 
 	private JPasswordField passwordField; 
 	private JButton btnNewButton; 
-	private JButton btnViewButton; 
+	private JButton btnBackButton; 
 
 	public HREmployee() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -170,12 +172,17 @@ public class HREmployee extends JFrame {
 		btnNewButton.setBounds(200, 447, 250, 74); 
 		contentPane.add(btnNewButton); 
 		
-
-		
+		btnBackButton = new JButton("Back to Employee Dashboard"); 
+		btnBackButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+		btnBackButton.setBounds(500, 447, 300, 74); 
+		contentPane.add(btnBackButton); 
+		btnBackButton.addActionListener(e -> handleBackButton()); 
 		setVisible(true); 
 	}
 	
-	
+	private void handleBackButton()
+	{
+		new EmployeeDashboard(); 
+		setVisible(false); 
+	}
 }
-
-
