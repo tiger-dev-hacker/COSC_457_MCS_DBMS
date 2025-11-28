@@ -1,0 +1,82 @@
+import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder; 
+
+public class EmployeeDashboard extends JFrame{
+	// TODO Auto-generated method stub
+			private JPanel windowpane;
+			private JButton addEmployeeButton; 
+			private JButton viewEmployeeButton; 
+			private JButton updateEmployeeButton; 
+			private JButton deleteEmployeeButton; 
+
+			
+			public EmployeeDashboard()
+			{
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				setBounds(450, 190, 1014, 597); 
+				setResizable(false); 
+				
+				windowpane = new JPanel(); 
+				
+				windowpane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				
+				setContentPane(windowpane); 
+				
+				windowpane.setLayout(null);
+				
+				
+				addEmployeeButton = new JButton("Add Employee");
+				addEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				addEmployeeButton.setBounds(200, 100, 250, 74); 
+				windowpane.add(addEmployeeButton); 
+				addEmployeeButton.addActionListener(e -> handleAddEmployee()); 
+				
+				viewEmployeeButton = new JButton("View Employee");
+				viewEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				viewEmployeeButton.setBounds(500, 100, 250, 74); 
+				windowpane.add(viewEmployeeButton); 
+				viewEmployeeButton.addActionListener(e -> handleViewEmployee()); 
+
+				
+				updateEmployeeButton = new JButton("Update Employee");
+				updateEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				updateEmployeeButton.setBounds(200, 400, 250, 74); 
+				windowpane.add(updateEmployeeButton); 
+				updateEmployeeButton.addActionListener(e -> handleUpdateEmployee()); 
+
+				deleteEmployeeButton = new JButton("Delete Employee");
+				deleteEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				deleteEmployeeButton.setBounds(500, 400, 250, 74); 
+				windowpane.add(deleteEmployeeButton); 
+				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
+
+				setVisible(true);
+			}
+				
+				private void handleAddEmployee() {
+					new HREmployee(); 
+					setVisible(false); 
+				}
+				
+				private void handleViewEmployee() {
+					new HREmployee(); 
+					setVisible(false); 
+				}
+				
+				
+				private void handleUpdateEmployee() {
+					new HREmployee(); 
+					setVisible(false); 
+				}
+				
+				private void handleDeleteEmployee() {
+					new HREmployee(); 
+					setVisible(false); 
+				}
+				
+		}
+
