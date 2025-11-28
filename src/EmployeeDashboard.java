@@ -12,6 +12,7 @@ public class EmployeeDashboard extends JFrame{
 			private JButton viewEmployeeButton; 
 			private JButton updateEmployeeButton; 
 			private JButton deleteEmployeeButton; 
+			private JButton backToDashboardbtn; 
 
 			
 			public EmployeeDashboard()
@@ -44,16 +45,21 @@ public class EmployeeDashboard extends JFrame{
 				
 				updateEmployeeButton = new JButton("Update Employee");
 				updateEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-				updateEmployeeButton.setBounds(200, 400, 250, 74); 
+				updateEmployeeButton.setBounds(200, 300, 250, 74); 
 				windowpane.add(updateEmployeeButton); 
 				updateEmployeeButton.addActionListener(e -> handleUpdateEmployee()); 
 
 				deleteEmployeeButton = new JButton("Delete Employee");
 				deleteEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-				deleteEmployeeButton.setBounds(500, 400, 250, 74); 
+				deleteEmployeeButton.setBounds(500, 300, 250, 74); 
 				windowpane.add(deleteEmployeeButton); 
 				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
 
+				backToDashboardbtn = new JButton("Back to Main Dashboard");
+				backToDashboardbtn.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				backToDashboardbtn.setBounds(300, 450, 300, 74); 
+				windowpane.add(backToDashboardbtn); 
+				backToDashboardbtn.addActionListener(e -> handleBackButton()); 
 				setVisible(true);
 			}
 				
@@ -63,20 +69,24 @@ public class EmployeeDashboard extends JFrame{
 				}
 				
 				private void handleViewEmployee() {
-					new HREmployee(); 
+					new ViewEmployee(); 
 					setVisible(false); 
 				}
 				
 				
 				private void handleUpdateEmployee() {
-					new HREmployee(); 
+					new UpdateEmployee(); 
 					setVisible(false); 
 				}
 				
 				private void handleDeleteEmployee() {
-					new HREmployee(); 
+					new DeleteEmployee(); 
 					setVisible(false); 
 				}
 				
+				private void handleBackButton() {
+					new MainDashboard(); 
+					setVisible(false); 
+				}
 		}
 
