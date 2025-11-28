@@ -1,101 +1,108 @@
 
-import javax.swing.*;     // Swing GUI classes (JFrame, JButton, JTextField, etc.)
-import java.awt.*;        // Layout managers like BorderLayout, GridLayout
-import java.sql.*;        // JDBC classes for database connection
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
-public class ViewEmployee extends JFrame {
+public class ViewEmployee extends JFrame implements ActionListener {
+	String user_name = "root"; 
+	String passWord = "Keyboard30%$";
+	String url = "jdbc:mysql://localhost:3306/mcs";
+    JTable table;
+    Choice choiceEMP;
+    JButton searchbtn, view_all, update, back;
+    public ViewEmployee(){
+    	
+		
+        getContentPane().setBackground(new Color(255,131,122));
+        JLabel search = new JLabel("Search by employee id");
+        search.setBounds(20,20,150,20);
+        add(search);
 
-    // Database connection details
-    String url = "jdbc:mysql://localhost:3306/jdbc_demo";
-    String user = "root";
-    String password = "Keyboard30%$";
+        choiceEMP = new Choice();
+        choiceEMP.setBounds(180,20,150,20);
+        add(choiceEMP);
 
-    // Input fields and output area
-    JTextField nameField, majorField;
-    JTextArea output;
+        try{
+			Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Statement statement = conn.createStatement();
 
-    public ViewEmployee() {
-
-        // Basic window setup
-        setTitle("Student App");
-        setSize(400, 300);
-        setLayout(new BorderLayout());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // ---------- Top Panel: Input Fields ----------
-        JPanel top = new JPanel(new GridLayout(2, 2));  // 2 rows × 2 columns
-
-        top.add(new JLabel("Name:"));
-        nameField = new JTextField();
-        top.add(nameField);
-
-        top.add(new JLabel("Employee"));
-        majorField = new JTextField();
-        top.add(majorField);
-
-        add(top, BorderLayout.NORTH);
-
-        // ---------- Center Area: Output ----------
-        output = new JTextArea();
-        output.setEditable(false);                      // User cannot type here
-        add(new JScrollPane(output), BorderLayout.CENTER);
-
-        // ---------- Bottom Panel: Buttons ----------
-        JPanel bottom = new JPanel(new GridLayout(1, 3));  // 1 row × 3 columns
-
-        JButton viewBtn = new JButton("View");
-        JButton viewAllBtn = new JButton("View All"); 
-        JButton backBtn = new JButton("Back to Employee Page"); 
-      
-        bottom.add(viewBtn);
-        bottom.add(viewAllBtn);
-        bottom.add(backBtn); 
-        add(bottom, BorderLayout.SOUTH);
-
-        // ---------- Button Click Actions ----------
-        viewBtn.addActionListener(e -> viewStudents());
-        
-        backBtn.addActionListener(e -> handleBackButton());
-        setVisible(true);   // Show window
-    }
-
-    // ---------- Create a Database Connection ----------
-    private Connection getConn() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");  // Load MySQL driver
-        return DriverManager.getConnection(url, user, password);
-    }
-
-    // ---------- VIEW Students (SELECT) ----------
-    private void viewStudents() {
-        output.setText("");  // Clear output
-
-        try (Connection conn = getConn();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM students")) {
-
-            // Loop through result rows
-            while (rs.next()) {
-                output.append(
-                        rs.getInt("id") + " | " +
-                        rs.getString("name") + " | " +
-                        rs.getString("major") + "\n"
-                );
+            ResultSet resultSet = statement.executeQuery("select * from employee");
+            while (resultSet.next()){
+                choiceEMP.add(resultSet.getString("EmployeeID"));
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        } catch (Exception ex) {
-            output.setText(ex.getMessage());
+        table = new JTable();
+        JScrollPane jp = new JScrollPane(table);
+        jp.setBounds(0,100,900,600);
+        add(jp);
+
+        searchbtn = new JButton("Search");
+        searchbtn.setBounds(20,70,80,20);
+        searchbtn.addActionListener(this);
+        add(searchbtn);
+
+        view_all = new JButton("View All");
+        view_all.setBounds(120,70,80,20);
+        view_all.addActionListener(this);
+        add(view_all);
+
+        update = new JButton("Update");
+        update.setBounds(220,70,80,20);
+        update.addActionListener(this);
+        add(update);
+
+        back = new JButton("Back");
+        back.setBounds(320,70,80,20);
+        back.addActionListener(this);
+        add(back);
+
+
+                 setSize(900,700);
+                 setLayout(null);
+                 setLocation(300,100);
+                 setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == searchbtn){
+            String query = "select * from employee where EmployeeID = '"+choiceEMP.getSelectedItem()+"'";
+            try {
+    			Connection conn = DriverManager.getConnection(url, user_name, passWord); 
+    			Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                table.setModel(DatabaseUtils.buildTableModel(resultSet));
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+        } else if (e.getSource() == view_all) {
+            try{
+    			Connection conn = DriverManager.getConnection(url, user_name, passWord); 
+    			Statement statement = conn.createStatement();
+
+                ResultSet resultSet = statement.executeQuery("select * from employee");
+                table.setModel(DatabaseUtils.buildTableModel(resultSet));
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+        } else if (e.getSource() == update){
+            setVisible(false);
+            new UpdateEmployee();
+        } else {
+            setVisible(false);
+            new EmployeeDashboard();
         }
     }
 
-   
-    private void handleBackButton()
-    {
-    	new EmployeeDashboard(); 
-    	setVisible(false); 
-    }
-    // ---------- Main Method ----------
     public static void main(String[] args) {
-        new ViewEmployee();   // Create and show the app window
+        new ViewEmployee();
     }
 }
-

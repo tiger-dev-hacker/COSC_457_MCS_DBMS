@@ -36,22 +36,17 @@ public class EmployeeDashboard extends JFrame{
 				windowpane.add(addEmployeeButton); 
 				addEmployeeButton.addActionListener(e -> handleAddEmployee()); 
 				
-				viewEmployeeButton = new JButton("View Employee");
+				viewEmployeeButton = new JButton("View/Update Employee");
 				viewEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-				viewEmployeeButton.setBounds(500, 100, 250, 74); 
+				viewEmployeeButton.setBounds(500, 100, 350, 74); 
 				windowpane.add(viewEmployeeButton); 
 				viewEmployeeButton.addActionListener(e -> handleViewEmployee()); 
 
-				
-				updateEmployeeButton = new JButton("Update Employee");
-				updateEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-				updateEmployeeButton.setBounds(200, 300, 250, 74); 
-				windowpane.add(updateEmployeeButton); 
-				updateEmployeeButton.addActionListener(e -> handleUpdateEmployee()); 
+ 
 
 				deleteEmployeeButton = new JButton("Delete Employee");
 				deleteEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-				deleteEmployeeButton.setBounds(500, 300, 250, 74); 
+				deleteEmployeeButton.setBounds(300, 300, 250, 74); 
 				windowpane.add(deleteEmployeeButton); 
 				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
 
@@ -73,12 +68,7 @@ public class EmployeeDashboard extends JFrame{
 					setVisible(false); 
 				}
 				
-				
-				private void handleUpdateEmployee() {
-					new UpdateEmployee(); 
-					setVisible(false); 
-				}
-				
+								
 				private void handleDeleteEmployee() {
 					new DeleteEmployee(); 
 					setVisible(false); 
