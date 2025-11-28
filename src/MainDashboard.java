@@ -20,7 +20,6 @@ public class MainDashboard extends JFrame {
 		
 		JLabel image = new JLabel(scaledIcon);
 		image.setBounds(0, 0, 1366, 565);
-		add(image);
 		
 		JLabel text = new JLabel("Welcome to Management and Construction Services LLC. "); 
 		
@@ -51,6 +50,8 @@ public class MainDashboard extends JFrame {
 		btnBusinessClient.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
 		btnBusinessClient.setBounds(800, 400, 200, 90); 
 		image.add(btnBusinessClient); 
+
+		add(image);
 
 		
 	}
