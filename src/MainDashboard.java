@@ -49,7 +49,9 @@ public class MainDashboard extends JFrame {
 		btnBusinessClient = new JButton("Business/Clients"); 
 		btnBusinessClient.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
 		btnBusinessClient.setBounds(800, 400, 200, 90); 
+		
 		image.add(btnBusinessClient); 
+		btnBusinessClient.addActionListener(e -> handleBusinessClientClick()); 
 
 		add(image);
 
@@ -63,7 +65,12 @@ public class MainDashboard extends JFrame {
 		// Or use: dispose(); to close the frame completely
 	}
 	
-
+	private void handleBusinessClientClick() {
+		new EmployeeDashboard(); // Call external class from same package
+		setVisible(false); // Hide current frame (optional)
+		// Or use: dispose(); to close the frame completely
+	}
+	
 
 	
 	public static void main(String[] args) {

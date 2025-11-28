@@ -65,10 +65,10 @@ public class ViewEmployee extends JFrame implements ActionListener {
         add(back);
 
 
-                 setSize(900,700);
-                 setLayout(null);
-                 setLocation(300,100);
-                 setVisible(true);
+	     setSize(900,700);
+	     setLayout(null);
+	     setLocation(300,100);
+	     setVisible(true);
     }
 
     @Override
@@ -94,8 +94,8 @@ public class ViewEmployee extends JFrame implements ActionListener {
                 E.printStackTrace();
             }
         } else if (e.getSource() == update){
+            new UpdateEmployee(choiceEMP.getSelectedItem());
             setVisible(false);
-            new UpdateEmployee();
         } else {
             setVisible(false);
             new EmployeeDashboard();
