@@ -9,15 +9,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class DeleteEmployee extends JFrame implements ActionListener {
+public class DeleteSite extends JFrame implements ActionListener {
 	String user_name = "root"; 
 	String passWord = "Keyboard30%$";
 	String url = "jdbc:mysql://localhost:3306/mcs";
     Choice choiceEMPID;
     JButton delete, back;
-    public DeleteEmployee(){
+    public DeleteSite(){
 
-        JLabel label = new JLabel("Employee ID");
+        JLabel label = new JLabel("Site ID");
         label.setBounds(50,50,100,30);
         label.setFont(new Font("Tahoma", Font.BOLD,15));
         add(label);
@@ -29,15 +29,15 @@ public class DeleteEmployee extends JFrame implements ActionListener {
         try{
         	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();            
-            ResultSet resultSet = statement.executeQuery("select * from employee");
+            ResultSet resultSet = statement.executeQuery("select * from site");
             while (resultSet.next()){
-                choiceEMPID.add(resultSet.getString("EmployeeID"));
+                choiceEMPID.add(resultSet.getString("SiteID"));
             }
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        JLabel labelName = new JLabel("Name");
+        JLabel labelName = new JLabel("Site Name");
         labelName.setBounds(50,100,100,30);
         labelName.setFont(new Font("Tahoma", Font.BOLD,15));
         add(labelName);
@@ -46,7 +46,7 @@ public class DeleteEmployee extends JFrame implements ActionListener {
         textName.setBounds(200,100,100,30);
         add(textName);
 
-        JLabel labelPhone = new JLabel("Phone");
+        JLabel labelPhone = new JLabel("Escort Limit");
         labelPhone.setBounds(50,150,100,30);
         labelPhone.setFont(new Font("Tahoma", Font.BOLD,15));
         add(labelPhone);
@@ -54,14 +54,25 @@ public class DeleteEmployee extends JFrame implements ActionListener {
         JLabel textPhone = new JLabel();
         textPhone.setBounds(200,150,100,30);
         add(textPhone);
+        
+        JLabel labelClientID = new JLabel("Client ID");
+        labelClientID.setBounds(50,200,100,30);
+        labelClientID.setFont(new Font("Tahoma", Font.BOLD,15));
+        add(labelClientID);
+
+        JLabel textLabel = new JLabel();
+        textLabel.setBounds(200,200,100,30);
+        add(textLabel);
 
         try {
         	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();         
-            ResultSet resultSet = statement.executeQuery("select * from employee where EmployeeID = '"+ choiceEMPID.getSelectedItem() + "'");
+            ResultSet resultSet = statement.executeQuery("select * from site where SiteID = '"+ choiceEMPID.getSelectedItem() + "'");
             while (resultSet.next()){
-                textName.setText(resultSet.getString("Fname"));
-                textPhone.setText(resultSet.getString("phone_number"));
+                textName.setText(resultSet.getString("SiteName"));
+                textPhone.setText(resultSet.getString("EscortLimit"));
+                textLabel.setText(resultSet.getString("ClientID"));
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -73,10 +84,11 @@ public class DeleteEmployee extends JFrame implements ActionListener {
                 try{
                 	Connection conn = DriverManager.getConnection(url, user_name, passWord);
            			Statement statement = conn.createStatement();         
-                    ResultSet resultSet = statement.executeQuery("select * from employee where EmployeeID = '"+choiceEMPID.getSelectedItem()+"'");
+                    ResultSet resultSet = statement.executeQuery("select * from site where SiteID = '"+choiceEMPID.getSelectedItem()+"'");
                     while (resultSet.next()) {
-                        textName.setText(resultSet.getString("Fname"));
-                        textPhone.setText(resultSet.getString("phone_number"));
+                        textName.setText(resultSet.getString("SiteName"));
+                        textPhone.setText(resultSet.getString("EscortLimit"));
+                        textLabel.setText(resultSet.getString("ClientID"));
                     }
                 }catch (Exception E){
                     E.printStackTrace();
@@ -125,27 +137,27 @@ public class DeleteEmployee extends JFrame implements ActionListener {
             try {
             	Connection conn = DriverManager.getConnection(url, user_name, passWord);
        			Statement statement = conn.createStatement();         
-                String query = "delete from employee where EmployeeID = '"+choiceEMPID.getSelectedItem()+"'";
+                String query = "delete from site where SiteID = '"+choiceEMPID.getSelectedItem()+"'";
                 int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()
 
                 if (rowsDeleted > 0) {
-                    JOptionPane.showMessageDialog(null, "Employee deleted successfully!");
+                    JOptionPane.showMessageDialog(null, "Site deleted successfully!");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Employee ID not found!");
+                    JOptionPane.showMessageDialog(null, "Site ID not found!");
                 }
                 setVisible(false);
-                new EmployeeDashboard();
+                new SiteDashboard();
 
             }catch (Exception E){
                 E.printStackTrace();
             }
         }else {
-        	new EmployeeDashboard(); 
+        	new SiteDashboard(); 
             setVisible(false);
         }
     }
 
     public static void main(String[] args) {
-        new DeleteEmployee();
+        new DeleteSite();
     }
 }
