@@ -14,7 +14,7 @@ public class ViewTools extends JFrame implements ActionListener {
 	String url = "jdbc:mysql://localhost:3306/mcs";
     JTable table;
     Choice choiceEMP;
-    JButton searchbtn, view_all, update, back;
+    JButton searchbtn, view_all, update, back, assign_tool;
     public ViewTools(){
     	
 		
@@ -64,6 +64,10 @@ public class ViewTools extends JFrame implements ActionListener {
         back.addActionListener(this);
         add(back);
 
+        assign_tool = new JButton(" Assign tool");
+        assign_tool.setBounds(420,70,80,20);
+        assign_tool.addActionListener(this);
+        add(assign_tool);
 
 	     setSize(900,700);
 	     setLayout(null);
@@ -96,7 +100,11 @@ public class ViewTools extends JFrame implements ActionListener {
         } else if (e.getSource() == update){
             new UpdateTools(choiceEMP.getSelectedItem());
             setVisible(false);
-        } else {
+        } else if(e.getSource() == assign_tool)
+        {
+        	new AssignTools(choiceEMP.getSelectedItem());
+        }
+        else {
             setVisible(false);
             new ToolDashboard();
         }

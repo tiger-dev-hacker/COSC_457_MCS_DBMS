@@ -11,7 +11,7 @@ public class JobDashboard extends JFrame{
 			private JPanel windowpane;
 			private JButton addEmployeeButton; 
 			private JButton viewEmployeeButton; 
-			private JButton updateEmployeeButton; 
+			private JButton findJobButton; 
 			private JButton deleteEmployeeButton; 
 			private JButton backToDashboardbtn; 
 
@@ -50,6 +50,12 @@ public class JobDashboard extends JFrame{
 				deleteEmployeeButton.setBounds(300, 300, 250, 74); 
 				windowpane.add(deleteEmployeeButton); 
 				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
+				
+				findJobButton = new JButton("Find Job");
+				findJobButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				findJobButton.setBounds(600, 300, 250, 74); 
+				windowpane.add(findJobButton); 
+				findJobButton.addActionListener(e -> handleFindJob()); 
 
 				backToDashboardbtn = new JButton("Back to Client/Job Dashboard");
 				backToDashboardbtn.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
@@ -66,6 +72,12 @@ public class JobDashboard extends JFrame{
 				
 				private void handleViewEmployee() {
 					new ViewJob(); 
+					setVisible(false); 
+				}
+				
+				
+				private void handleFindJob() {
+					new FindJob(); 
 					setVisible(false); 
 				}
 				

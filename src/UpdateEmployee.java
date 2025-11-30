@@ -1,7 +1,3 @@
-
-
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,152 +8,240 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class UpdateEmployee extends JFrame implements ActionListener {
-	String user_name = "root"; 
-	String passWord = "Keyboard30%$";
-	String url = "jdbc:mysql://localhost:3306/mcs";
-	
+    String user_name = "root";
+    String passWord = "Keyboard30%$";
+    String url = "jdbc:mysql://localhost:3306/mcs";
+
     JTextField tfName, tmName, tlName, tGender, tPhoneNumber;
     JLabel tempid;
-    JButton add,back;
+    JButton add, back;
     String number;
-   
-    public UpdateEmployee(String number){
 
+    public UpdateEmployee(String number) {
         this.number = number;
-        getContentPane().setBackground(new Color(163,255,188));
-
-        JLabel heading = new JLabel("Add Employee Detail");
-        heading.setBounds(320,30,300,50);
-        heading.setFont(new Font("serif", Font.BOLD,25));
-        add(heading);
-      
-        JLabel empID = new JLabel("Employee ID");
-        empID.setBounds(50,150,120,30);
-        empID.setFont(new Font("SAN_SERIF", Font.BOLD,20));
-        add(empID);
         
-        tempid = new JLabel("" + this.number);
-        tempid.setBounds(200,150,150,30);
-        tempid.setFont(new Font("SAN_SERIF", Font.BOLD,20));
-        tempid.setBackground(new Color(177,252,197));
+        // Set dark background
+        getContentPane().setBackground(new Color(15, 23, 42)); // Dark slate
+
+        // Define custom colors
+        Color darkNavy = new Color(30, 58, 138);
+        Color royalBlue = new Color(37, 99, 235);
+        Color emeraldGreen = new Color(16, 185, 129);
+        Color lightText = new Color(255, 255, 255);
+        Color labelBg = new Color(51, 65, 85); // Slate gray for labels
+        Color fieldBg = new Color(248, 250, 252); // Light gray for fields
+        Color fieldText = new Color(30, 30, 30);
+
+        // Title Label
+        JLabel heading = new JLabel("Update Employee Details");
+        heading.setBounds(250, 25, 500, 60);
+        heading.setFont(new Font("Segoe UI", Font.BOLD, 36));
+        heading.setForeground(lightText);
+        heading.setBackground(darkNavy);
+        heading.setOpaque(true);
+        heading.setHorizontalAlignment(JLabel.CENTER);
+        add(heading);
+
+        // Employee ID Label
+        JLabel empID = new JLabel("Employee ID");
+        empID.setBounds(50, 120, 140, 35);
+        empID.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(empID, labelBg, lightText);
+        add(empID);
+
+        // Employee ID Value (read-only)
+        tempid = new JLabel(this.number);
+        tempid.setBounds(210, 120, 200, 35);
+        tempid.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        tempid.setForeground(emeraldGreen);
+        tempid.setBackground(new Color(30, 41, 59));
+        tempid.setOpaque(true);
+        tempid.setHorizontalAlignment(JLabel.CENTER);
+        tempid.setBorder(new javax.swing.border.LineBorder(emeraldGreen, 2, true));
         add(tempid);
 
-        
+        // First Name Label
         JLabel fname = new JLabel("First Name");
-        fname.setBounds(50,200,120,30);
-        fname.setFont(new Font("SAN_SERIF", Font.BOLD,20));
+        fname.setBounds(50, 200, 140, 35);
+        fname.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(fname, labelBg, lightText);
         add(fname);
-        
+
         tfName = new JTextField();
-        tfName.setBounds(200,200,150,30);
-        tfName.setBackground(new Color(177,252,197));
+        tfName.setBounds(210, 200, 200, 40);
+        tfName.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        styleTextField(tfName, fieldBg, fieldText);
         add(tfName);
 
+        // Middle Name Label
         JLabel mname = new JLabel("Middle Name");
-        mname.setBounds(50,250,120,30);
-        mname.setFont(new Font("SAN_SERIF", Font.BOLD,20));
+        mname.setBounds(50, 280, 140, 35);
+        mname.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(mname, labelBg, lightText);
         add(mname);
-        
+
         tmName = new JTextField();
-        tmName.setBounds(200,250,150,30);
-        tmName.setBackground(new Color(177,252,197));
+        tmName.setBounds(210, 280, 200, 40);
+        tmName.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        styleTextField(tmName, fieldBg, fieldText);
         add(tmName);
-        
+
+        // Last Name Label
         JLabel lname = new JLabel("Last Name");
-        lname.setBounds(400,150,120,30);
-        lname.setFont(new Font("SAN_SERIF", Font.BOLD,20));
+        lname.setBounds(480, 120, 140, 35);
+        lname.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(lname, labelBg, lightText);
         add(lname);
-        
+
         tlName = new JTextField();
-        tlName.setBounds(600,150,150,30);
-        tlName.setBackground(new Color(177,252,197));
+        tlName.setBounds(640, 120, 200, 40);
+        tlName.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        styleTextField(tlName, fieldBg, fieldText);
         add(tlName);
-        
-        
+
+        // Gender Label
         JLabel gender = new JLabel("Gender");
-        gender.setBounds(400,200,120,30);
-        gender.setFont(new Font("SAN_SERIF", Font.BOLD,20));
+        gender.setBounds(480, 200, 140, 35);
+        gender.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(gender, labelBg, lightText);
         add(gender);
-        
+
         tGender = new JTextField();
-        tGender.setBounds(600 ,200,150,30);
-        tGender.setBackground(new Color(177,252,197));
+        tGender.setBounds(640, 200, 200, 40);
+        tGender.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        styleTextField(tGender, fieldBg, fieldText);
         add(tGender);
-        
+
+        // Phone Number Label
         JLabel phone_number = new JLabel("Phone Number");
-        phone_number.setBounds(400,250,150,30);
-        phone_number.setFont(new Font("SAN_SERIF", Font.BOLD,20));
+        phone_number.setBounds(480, 280, 140, 35);
+        phone_number.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(phone_number, labelBg, lightText);
         add(phone_number);
-        
+
         tPhoneNumber = new JTextField();
-        tPhoneNumber.setBounds(600,250,150,30);
-        tPhoneNumber.setBackground(new Color(177,252,197));
+        tPhoneNumber.setBounds(640, 280, 200, 40);
+        tPhoneNumber.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        styleTextField(tPhoneNumber, fieldBg, fieldText);
         add(tPhoneNumber);
-      
-//
+
+        // Load existing employee data
         try {
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
-   			Statement statement = conn.createStatement();            
-   			String query = "select * from employee where EmployeeID = '"+number+"'";
+            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+            Statement statement = conn.createStatement();
+            String query = "select * from employee where EmployeeID = '" + number + "'";
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 tfName.setText(resultSet.getString("Fname"));
                 tmName.setText(resultSet.getString("Mname"));
                 tlName.setText(resultSet.getString("Lname"));
                 tGender.setText(resultSet.getString("gender"));
                 tPhoneNumber.setText(resultSet.getString("phone_number"));
-
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-
+        // Update Button
         add = new JButton("UPDATE");
-        add.setBounds(450,550,150,40);
-        add.setBackground(Color.black);
-        add.setForeground(Color.WHITE);
+        add.setBounds(280, 400, 180, 60);
+        add.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        styleButton(add, emeraldGreen, lightText, 20);
         add.addActionListener(this);
         add(add);
 
+        // Back Button
         back = new JButton("BACK");
-        back.setBounds(250,550,150,40);
-        back.setBackground(Color.black);
-        back.setForeground(Color.WHITE);
+        back.setBounds(500, 400, 180, 60);
+        back.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        styleButton(back, royalBlue, lightText, 20);
         back.addActionListener(this);
         add(back);
 
-
-        setSize(900,700);
+        setSize(900, 550);
         setLayout(null);
-        setLocation(300,50);
+        setLocation(300, 100);
         setVisible(true);
+    }
 
+    // Helper method to style labels
+    private void styleLabel(JLabel label, Color bgColor, Color fgColor) {
+        label.setBackground(bgColor);
+        label.setForeground(fgColor);
+        label.setOpaque(true);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setBorder(new javax.swing.border.LineBorder(bgColor, 2, true));
+    }
+
+    // Helper method to style text fields
+    private void styleTextField(JTextField field, Color bgColor, Color fgColor) {
+        field.setBackground(bgColor);
+        field.setForeground(fgColor);
+        field.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                new javax.swing.border.LineBorder(new Color(59, 130, 246), 2, true),
+                javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+    }
+
+    // Helper method to style buttons with rounded corners
+    private void styleButton(JButton button, Color bgColor, Color fgColor, int cornerRadius) {
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.setContentAreaFilled(false);
+
+        button.setBorder(new javax.swing.border.LineBorder(bgColor, 2, true));
+
+        button.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                        java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(button.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), cornerRadius, cornerRadius);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            Color originalColor = bgColor;
+
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(bgColor.brighter());
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(originalColor);
+            }
+        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == add){
-          String fname = tfName.getText();
-          String mname = tmName.getText();
-          String lname = tlName.getText(); 
-          String gender = tGender.getText(); 
-          String phone_number = tPhoneNumber.getText(); 
-          try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
-  			Statement statement = conn.createStatement();
-             String query = "update employee set Fname = '"+ fname +"', Mname = '"+ mname +"', Lname = '"+ lname + "', gender = '"+ gender +"', phone_number ='" + phone_number +"' where EmployeeID = '"+ number +"'";
-              statement.executeUpdate(query);
-              JOptionPane.showMessageDialog(null, "Details updated successfully");
-              setVisible(false);
-              new EmployeeDashboard();
-          }catch (Exception E){
-              E.printStackTrace();
-          }
-      }else {
-          setVisible(false);
-          new ViewEmployee();
-      }
+        if (e.getSource() == add) {
+            String fname = tfName.getText();
+            String mname = tmName.getText();
+            String lname = tlName.getText();
+            String gender = tGender.getText();
+            String phone_number = tPhoneNumber.getText();
+            try {
+                Connection conn = DriverManager.getConnection(url, user_name, passWord);
+                Statement statement = conn.createStatement();
+                String query = "update employee set Fname = '" + fname + "', Mname = '" + mname + "', Lname = '" + lname + "', gender = '" + gender + "', phone_number ='" + phone_number + "' where EmployeeID = '" + number + "'";
+                statement.executeUpdate(query);
+                JOptionPane.showMessageDialog(null, "Details updated successfully");
+                setVisible(false);
+                new EmployeeDashboard();
+            } catch (Exception E) {
+                E.printStackTrace();
+            }
+        } else {
+            setVisible(false);
+            new ViewEmployee();
+        }
     }
 
     public static void main(String[] args) {
