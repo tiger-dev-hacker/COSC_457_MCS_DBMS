@@ -10,7 +10,7 @@ public class ContractDashboard extends JFrame{
 			private JPanel windowpane;
 			private JButton addEmployeeButton; 
 			private JButton viewEmployeeButton; 
-			private JButton updateEmployeeButton; 
+			private JButton findContractButton; 
 			private JButton deleteEmployeeButton; 
 			private JButton backToDashboardbtn; 
 
@@ -49,6 +49,13 @@ public class ContractDashboard extends JFrame{
 				windowpane.add(deleteEmployeeButton); 
 				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
 
+				findContractButton = new JButton("Find Contract");
+				findContractButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				findContractButton.setBounds(600, 300, 250, 74); 
+				windowpane.add(findContractButton); 
+				findContractButton.addActionListener(e -> handlefindContracts()); 
+
+				
 				backToDashboardbtn = new JButton("Back to Contract/Job Dashboard");
 				backToDashboardbtn.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
 				backToDashboardbtn.setBounds(300, 450, 300, 74); 
@@ -74,6 +81,11 @@ public class ContractDashboard extends JFrame{
 					setVisible(false); 
 				}
 				
+				private void handlefindContracts()
+				{
+					new FindContract();
+					setVisible(false); 
+				}
 				private void handleBackButton() {
 					new ContractJobDashboard(); 
 					setVisible(false); 

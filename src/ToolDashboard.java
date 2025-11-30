@@ -10,7 +10,7 @@ public class ToolDashboard extends JFrame{
 			private JPanel windowpane;
 			private JButton addEmployeeButton; 
 			private JButton viewEmployeeButton; 
-			private JButton updateEmployeeButton; 
+			private JButton findEmployeeButton; 
 			private JButton deleteEmployeeButton; 
 			private JButton backToDashboardbtn; 
 
@@ -48,7 +48,14 @@ public class ToolDashboard extends JFrame{
 				deleteEmployeeButton.setBounds(300, 300, 250, 74); 
 				windowpane.add(deleteEmployeeButton); 
 				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
-
+				
+				findEmployeeButton = new JButton("Find Tools");
+				findEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				findEmployeeButton.setBounds(600, 300, 250, 74); 
+				windowpane.add(findEmployeeButton); 
+				findEmployeeButton.addActionListener(e -> handleFindTools()); 
+				
+				
 				backToDashboardbtn = new JButton("Back to Main Dashboard");
 				backToDashboardbtn.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
 				backToDashboardbtn.setBounds(300, 450, 300, 74); 
@@ -68,6 +75,10 @@ public class ToolDashboard extends JFrame{
 					setVisible(false); 
 				}
 				
+				private void handleFindTools() {
+					new FindTools(); 
+					setVisible(false); 
+				}
 								
 				private void handleDeleteEmployee() {
 					new DeleteTools(); 

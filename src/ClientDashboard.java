@@ -11,7 +11,7 @@ public class ClientDashboard extends JFrame{
 			private JPanel windowpane;
 			private JButton addEmployeeButton; 
 			private JButton viewEmployeeButton; 
-			private JButton updateEmployeeButton; 
+			private JButton findClientButton; 
 			private JButton deleteEmployeeButton; 
 			private JButton backToDashboardbtn; 
 
@@ -50,7 +50,13 @@ public class ClientDashboard extends JFrame{
 				deleteEmployeeButton.setBounds(300, 300, 250, 74); 
 				windowpane.add(deleteEmployeeButton); 
 				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
-
+				
+				findClientButton = new JButton("Find Client");
+				findClientButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				findClientButton.setBounds(600, 300, 250, 74); 
+				windowpane.add(findClientButton); 
+				findClientButton.addActionListener(e -> handleFindClient()); 
+				
 				backToDashboardbtn = new JButton("Back to Client/Site Dashboard");
 				backToDashboardbtn.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
 				backToDashboardbtn.setBounds(300, 450, 300, 74); 
@@ -69,6 +75,10 @@ public class ClientDashboard extends JFrame{
 					setVisible(false); 
 				}
 				
+				private void handleFindClient() {
+					new FindClient(); 
+					setVisible(false); 
+				}
 								
 				private void handleDeleteEmployee() {
 					new DeleteClient(); 
