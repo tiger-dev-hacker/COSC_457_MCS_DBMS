@@ -5,9 +5,9 @@ import java.awt.Image;
 
 import javax.swing.*;
 
-public class MainDashboard extends JFrame {
+public class ContractJobDashboard extends JFrame {
 
-	public MainDashboard() {
+	public ContractJobDashboard() {
 		setSize(1366, 565);
 		setLocation(100, 100);
 		setLayout(null);
@@ -37,21 +37,29 @@ public class MainDashboard extends JFrame {
 		setVisible(true); 
 		
 		JButton btnHREmployees; 
-		btnHREmployees = new JButton("HR/Employees"); 
+		btnHREmployees = new JButton("Contract"); 
 		btnHREmployees.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-		btnHREmployees.setBounds(400, 400, 200, 90); 
+		btnHREmployees.setBounds(300, 400, 200, 90); 
 		image.add(btnHREmployees); 
 		
-		btnHREmployees.addActionListener(e -> handleHREmployeesClick()); 
+		btnHREmployees.addActionListener(e -> handleClientClick()); 
 		
 		
 		JButton btnBusinessClient; 
-		btnBusinessClient = new JButton("Business/Clients"); 
+		btnBusinessClient = new JButton("Job"); 
 		btnBusinessClient.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-		btnBusinessClient.setBounds(800, 400, 200, 90); 
+		btnBusinessClient.setBounds(600, 400, 200, 90); 
 		
 		image.add(btnBusinessClient); 
-		btnBusinessClient.addActionListener(e -> handleBusinessClientClick()); 
+		btnBusinessClient.addActionListener(e -> handleSiteClick()); 
+		
+		JButton btnBackClient; 
+		btnBackClient = new JButton("Back to Business Dashboard"); 
+		btnBackClient.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+		btnBackClient.setBounds(900, 400, 400, 90); 
+		
+		image.add(btnBackClient); 
+		btnBackClient.addActionListener(e -> handleBackClick()); 
 
 		add(image);
 
@@ -59,13 +67,18 @@ public class MainDashboard extends JFrame {
 	}
 	
 	// Method to handle HR/Employees button click
-	private void handleHREmployeesClick() {
-		new EmployeeDashboard(); // Call external class from same package
+	private void handleClientClick() {
+		new ContractDashboard(); // Call external class from same package
 		setVisible(false); // Hide current frame (optional)
 		// Or use: dispose(); to close the frame completely
 	}
 	
-	private void handleBusinessClientClick() {
+	private void handleSiteClick() {
+		new JobDashboard(); // Call external class from same package
+		setVisible(false); // Hide current frame (optional)
+	}
+
+	private void handleBackClick() {
 		new BusinessDashboard(); // Call external class from same package
 		setVisible(false); // Hide current frame (optional)
 	}
@@ -75,7 +88,7 @@ public class MainDashboard extends JFrame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		new MainDashboard(); 
+		new ContractJobDashboard(); 
 	}
 
 }
