@@ -49,7 +49,7 @@ public class MainDashboard extends JFrame {
     private void handleHREmployeesClick() {
         new EmployeeDashboard();
         setVisible(false);
-    }
+    }	
     
     private void handleBusinessClientClick() {
         new BusinessDashboard();

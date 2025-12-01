@@ -125,7 +125,7 @@ public class DeleteClient extends JFrame implements ActionListener {
             try {
             	Connection conn = DriverManager.getConnection(url, user_name, passWord);
        			Statement statement = conn.createStatement();         
-                String query = "delete from client where ClientID = '"+choiceEMPID.getSelectedItem()+"' restrict";
+                String query = "delete from client where ClientID = '"+choiceEMPID.getSelectedItem()+"' CASCADE";
                 int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()
 
                 if (rowsDeleted > 0) {

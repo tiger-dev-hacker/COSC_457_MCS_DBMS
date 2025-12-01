@@ -16,6 +16,8 @@ public class EmployeeDashboard extends JFrame {
 	private JButton findEmployeeButton;
 	private JButton backToDashboardbtn;
 	private JButton assignEmployeeButton;
+	private JButton timesheetButton;
+
 
 	public EmployeeDashboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,10 +89,17 @@ public class EmployeeDashboard extends JFrame {
 		backgroundImage.add(findEmployeeButton);
 		findEmployeeButton.addActionListener(e -> handleFindEmployee());
 
+		timesheetButton = new JButton("Timesheet Log");
+		timesheetButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		timesheetButton.setBounds(200, 420, 280, 74);
+		styleButton(timesheetButton, tealBlue, lightText, 20);
+		backgroundImage.add(timesheetButton);
+		timesheetButton.addActionListener(e -> handleTimesheet());
+
 		// Back to Dashboard Button
 		backToDashboardbtn = new JButton("Back to Main Dashboard");
 		backToDashboardbtn.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		backToDashboardbtn.setBounds(300, 420, 330, 64);
+		backToDashboardbtn.setBounds(500, 420, 330, 64);
 		styleButton(backToDashboardbtn, steelBlue, lightText, 20);
 		backgroundImage.add(backToDashboardbtn);
 		backToDashboardbtn.addActionListener(e -> handleBackButton());
@@ -158,7 +167,11 @@ public class EmployeeDashboard extends JFrame {
 		setVisible(false);
 	}
 
-
+	private void handleTimesheet()
+	{
+		new TimeSheet(); 
+		setVisible(false); 
+	}
 
 	private void handleBackButton() {
 		new MainDashboard();

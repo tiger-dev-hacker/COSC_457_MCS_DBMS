@@ -12,6 +12,8 @@ public class FindClient extends JFrame {
     private JPanel contentPane;
     private JTextField clientNameField;
     private JTextField bcelField;
+    private JTextField contractField;
+
     private JTable resultsTable;
     private DefaultTableModel tableModel;
     private JButton searchButton;
@@ -71,6 +73,18 @@ public class FindClient extends JFrame {
         bcelField.setBounds(390, 30, 150, 30);
         bcelField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(bcelField);
+        
+        
+        
+        JLabel contractIDLabel = new JLabel("Contract ID");
+        contractIDLabel.setBounds(290, 60, 90, 25);
+        contractIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(contractIDLabel);
+
+        contractField = new JTextField();
+        contractField.setBounds(390, 60, 150, 30);
+        contractField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(contractField);
 
         
 
@@ -139,7 +153,22 @@ public class FindClient extends JFrame {
             query.append(" AND BackgroundCheckExpiryLimit LIKE ?");
             parameters.add("%" + tool_manifest + "%");
         }
+        
+        String contract_id = contractField.getText().trim();
+        
+        if (!contract_id.isEmpty()) {
+        	if (!tool_name.isEmpty() || !tool_manifest.isEmpty())
+        	{
+        		query.append(""); 
+        	}
+        	else
+        	{
+        		query = new StringBuilder ("SELECT * FROM client WHERE ClientID = (SELECT ClientID FROM contract WHERE ContractID = '" + contract_id + "')");
 
+        	}
+            
+        }
+        
         // Execute query
         try {
             Connection conn = DriverManager.getConnection(url, user_name, passWord);

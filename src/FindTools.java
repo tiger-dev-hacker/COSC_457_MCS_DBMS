@@ -11,6 +11,8 @@ public class FindTools extends JFrame {
     private JPanel contentPane;
     private JTextField toolNameField;
     private JTextField toolManifestField;
+    private JTextField contractIDField;
+
     private JTable resultsTable;
     private DefaultTableModel tableModel;
     private JButton searchButton;
@@ -70,6 +72,16 @@ public class FindTools extends JFrame {
         toolManifestField.setBounds(390, 30, 150, 30);
         toolManifestField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(toolManifestField);
+
+        JLabel contractIDLabel = new JLabel("ContractID");
+        contractIDLabel.setBounds(290, 60, 90, 25);
+        contractIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(contractIDLabel);
+
+        contractIDField = new JTextField();
+        contractIDField.setBounds(390, 60, 150, 30);
+        contractIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(contractIDField);
 
         
 
@@ -137,6 +149,21 @@ public class FindTools extends JFrame {
         if (!tool_manifest.isEmpty()) {
             query.append(" AND ToolManifest LIKE ?");
             parameters.add("%" + tool_manifest + "%");
+        }
+        
+        String contract_id = contractIDField.getText().trim();
+
+        if (!contract_id.isEmpty()) {
+        	if (!tool_name.isEmpty() || !tool_name.isEmpty())
+        	{
+        		query.append(""); 
+        	}
+        	else
+        	{
+        		query = new StringBuilder ("SELECT DISTINCT tool.* FROM tool JOIN used_in ON tool.ToolID = used_in.ToolID WHERE ContractID = '" + contract_id + "'");
+
+        	}
+            
         }
 
         // Execute query
