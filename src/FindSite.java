@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.*;
@@ -8,12 +7,11 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindJob extends JFrame {
+public class FindSite extends JFrame {
     private JPanel contentPane;
-    private JTextField jobNameField;
-    private JTextField jobLengthField;
-    private JTextField contractIDField;
-    private JTextField EmployeeIDField;
+    private JTextField siteNameField;
+    private JTextField escortLimitField;
+    private JTextField clientIDField;
 
     private JTable resultsTable;
     private DefaultTableModel tableModel;
@@ -24,8 +22,8 @@ public class FindJob extends JFrame {
     String passWord = "Keyboard30%$";
     String url = "jdbc:mysql://localhost:3306/mcs";
     
-    public FindJob() {
-        setTitle("Find Job");
+    public FindSite() {
+        setTitle("Find Sites");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(300, 100, 1000, 600);
         setResizable(false);
@@ -37,7 +35,7 @@ public class FindJob extends JFrame {
         setContentPane(contentPane);
 
         // Title
-        JLabel titleLabel = new JLabel("Find Jobs");
+        JLabel titleLabel = new JLabel("Find Sites");
         titleLabel.setBounds(380, 10, 300, 40);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
         titleLabel.setForeground(new Color(30, 58, 138));
@@ -55,45 +53,36 @@ public class FindJob extends JFrame {
         contentPane.add(criteriaPanel);
 
         // Row 1: SSN, First Name, Middle Name
-        JLabel ssnLabel = new JLabel("Job Name");
+        JLabel ssnLabel = new JLabel("Site Name");
         ssnLabel.setBounds(30, 30, 80, 25);
         ssnLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(ssnLabel);
 
-        jobNameField = new JTextField();
-        jobNameField.setBounds(120, 30, 150, 30);
-        jobNameField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(jobNameField);
+        siteNameField = new JTextField();
+        siteNameField.setBounds(120, 30, 150, 30);
+        siteNameField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(siteNameField);
         
-        JLabel firstnameLabel = new JLabel("Job Length (In weeks)");
+        JLabel firstnameLabel = new JLabel("Site Escort Limit");
         firstnameLabel.setBounds(290, 30, 90, 25);
         firstnameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(firstnameLabel);
 
-        jobLengthField = new JTextField();
-        jobLengthField.setBounds(390, 30, 150, 30);
-        jobLengthField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(jobLengthField);
-        
-        JLabel contractIDLabel = new JLabel("Contract ID");
+        escortLimitField = new JTextField();
+        escortLimitField.setBounds(390, 30, 150, 30);
+        escortLimitField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(escortLimitField);
+
+        JLabel contractIDLabel = new JLabel("Client ID");
         contractIDLabel.setBounds(290, 60, 90, 25);
         contractIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(contractIDLabel);
 
-        contractIDField = new JTextField();
-        contractIDField.setBounds(390, 60, 150, 30);
-        contractIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(contractIDField);
+        clientIDField = new JTextField();
+        clientIDField.setBounds(390, 60, 150, 30);
+        clientIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(clientIDField);
 
-        JLabel employeeIDLabel = new JLabel("Employee ID");
-        employeeIDLabel.setBounds(30, 60, 80, 25);
-        employeeIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(employeeIDLabel);
-
-        EmployeeIDField = new JTextField();
-        EmployeeIDField.setBounds(120, 60, 150, 30);
-        EmployeeIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(EmployeeIDField);
         
 
         // Buttons
@@ -110,7 +99,7 @@ public class FindJob extends JFrame {
         clearButton.addActionListener(e -> clearFields());
 
         // Results Table
-        String[] columnNames = {"Job Name", "Job Length (In Weeks)", "ContractID"};
+        String[] columnNames = {"Site Name", "Escort Limit", "Client ID"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -130,12 +119,12 @@ public class FindJob extends JFrame {
         contentPane.add(scrollPane);
 
         // Back Button
-        backButton = new JButton("Back to Job Dashboard");
+        backButton = new JButton("Back to Site Dashboard");
         backButton.setBounds(340, 510, 280, 40);
         styleButton(backButton, new Color(30, 58, 138), Color.WHITE);
         contentPane.add(backButton);
         backButton.addActionListener(e -> {
-            new JobDashboard();
+            new ToolDashboard();
             setVisible(false);
         });
 
@@ -147,41 +136,28 @@ public class FindJob extends JFrame {
         tableModel.setRowCount(0);
 
         // Build dynamic SQL query based on filled fields
-        StringBuilder query = new StringBuilder("SELECT * FROM job WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT * FROM site WHERE 1=1");
         List<String> parameters = new ArrayList<>();
 
-        String job_name = jobNameField.getText().trim();
-        if (!job_name.isEmpty()) {
-            query.append(" AND JobName LIKE ?");
-            parameters.add("%" + job_name + "%");
+        String tool_name = siteNameField.getText().trim();
+        if (!tool_name.isEmpty()) {
+            query.append(" AND SiteName LIKE ?");
+            parameters.add("%" + tool_name + "%");
         }
 
-        String job_length = jobLengthField.getText().trim();
-        if (!job_length.isEmpty()) {
-            query.append(" AND JobLength LIKE ?");
-            parameters.add("%" + job_length + "%");
+        String tool_manifest = escortLimitField.getText().trim();
+        if (!tool_manifest.isEmpty()) {
+            query.append(" AND EscortLimit LIKE ?");
+            parameters.add("%" + tool_manifest + "%");
         }
         
-        String contract_id = contractIDField.getText().trim();
-        if (!contract_id.isEmpty()) {
-            query.append(" AND ContractID LIKE ?");
-            parameters.add("%" + contract_id + "%");
+        String client_id = clientIDField.getText().trim();
+
+        if (!client_id.isEmpty()) {
+            query.append(" AND ClientID LIKE ?");
+            parameters.add("%" + client_id + "%");
         }
         
-        String employee_id = EmployeeIDField.getText().trim(); 
-        if (!employee_id.isEmpty()) {
-        	if (!job_name.isEmpty() || !job_length.isEmpty() || !contract_id.isEmpty())
-        	{
-        		query.append(""); 
-        	}
-        	else
-        	{
-        		query = new StringBuilder ("SELECT DISTINCT job.* FROM job JOIN works_on ON job.JobID = works_on.JobID WHERE EmployeeID = '" + employee_id + "'");
-
-        	}
-            
-        }
-
         // Execute query
         try {
             Connection conn = DriverManager.getConnection(url, user_name, passWord);
@@ -198,10 +174,10 @@ public class FindJob extends JFrame {
 
             while (rs.next()) {
                 Object[] row = {
-                    rs.getString("JobName"),
-                    rs.getString("JobLength"),
-                    rs.getString("ContractID")
-
+                    rs.getString("SiteName"),
+                    rs.getString("EscortLimit"),
+                    rs.getString("ClientID")
+                 
                 };
                 tableModel.addRow(row);
                 count++;
@@ -209,12 +185,12 @@ public class FindJob extends JFrame {
 
             if (count == 0) {
                 JOptionPane.showMessageDialog(this,
-                    "No jobs found matching the criteria.",
+                    "No sites found matching the criteria.",
                     "No Results",
                     JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this,
-                    count + " job(s) found.",
+                    count + " site(s) found.",
                     "Search Complete",
                     JOptionPane.INFORMATION_MESSAGE);
             }
@@ -225,7 +201,7 @@ public class FindJob extends JFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this,
-                "Error searching jobs: " + ex.getMessage(),
+                "Error searching sites: " + ex.getMessage(),
                 "Database Error",
                 JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
@@ -233,9 +209,9 @@ public class FindJob extends JFrame {
     }
 
     private void clearFields() {
-    	jobNameField.setText("");
-    	jobLengthField.setText("");
-    	contractIDField.setText("");
+    	siteNameField.setText("");
+    	escortLimitField.setText("");
+    	clientIDField.setText("");
 
         tableModel.setRowCount(0);
     }

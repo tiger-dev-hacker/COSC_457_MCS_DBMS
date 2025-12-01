@@ -12,7 +12,7 @@ public class UpdateEmployee extends JFrame implements ActionListener {
     String passWord = "Keyboard30%$";
     String url = "jdbc:mysql://localhost:3306/mcs";
 
-    JTextField tfName, tmName, tlName, tGender, tPhoneNumber;
+    JTextField tfName, tmName, tlName, tGender, tPhoneNumber, tSalary;
     JLabel tempid;
     JButton add, back;
     String number;
@@ -86,6 +86,19 @@ public class UpdateEmployee extends JFrame implements ActionListener {
         styleTextField(tmName, fieldBg, fieldText);
         add(tmName);
 
+        // Salary Label
+        JLabel salary = new JLabel("Salary");
+        salary.setBounds(50, 360, 140, 35);
+        salary.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(salary, labelBg, lightText);
+        add(salary);
+
+        tSalary = new JTextField();
+        tSalary.setBounds(210, 360, 200, 40);
+        tSalary.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        styleTextField(tSalary, fieldBg, fieldText);
+        add(tSalary);
+
         // Last Name Label
         JLabel lname = new JLabel("Last Name");
         lname.setBounds(480, 120, 140, 35);
@@ -137,6 +150,7 @@ public class UpdateEmployee extends JFrame implements ActionListener {
                 tlName.setText(resultSet.getString("Lname"));
                 tGender.setText(resultSet.getString("gender"));
                 tPhoneNumber.setText(resultSet.getString("phone_number"));
+                tSalary.setText(resultSet.getString("salary"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,7 +158,7 @@ public class UpdateEmployee extends JFrame implements ActionListener {
 
         // Update Button
         add = new JButton("UPDATE");
-        add.setBounds(280, 400, 180, 60);
+        add.setBounds(280, 450, 180, 60);
         add.setFont(new Font("Segoe UI", Font.BOLD, 20));
         styleButton(add, emeraldGreen, lightText, 20);
         add.addActionListener(this);
@@ -152,13 +166,13 @@ public class UpdateEmployee extends JFrame implements ActionListener {
 
         // Back Button
         back = new JButton("BACK");
-        back.setBounds(500, 400, 180, 60);
+        back.setBounds(500, 450, 180, 60);
         back.setFont(new Font("Segoe UI", Font.BOLD, 20));
         styleButton(back, royalBlue, lightText, 20);
         back.addActionListener(this);
         add(back);
 
-        setSize(900, 550);
+        setSize(900, 600);
         setLayout(null);
         setLocation(300, 100);
         setVisible(true);
@@ -227,10 +241,25 @@ public class UpdateEmployee extends JFrame implements ActionListener {
             String lname = tlName.getText();
             String gender = tGender.getText();
             String phone_number = tPhoneNumber.getText();
+            String salary = tSalary.getText();
+
+            // Validate salary
+            if (salary.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Salary cannot be empty");
+                return;
+            }
+
+            try {
+                Double.parseDouble(salary);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Enter a valid salary amount");
+                return;
+            }
+
             try {
                 Connection conn = DriverManager.getConnection(url, user_name, passWord);
                 Statement statement = conn.createStatement();
-                String query = "update employee set Fname = '" + fname + "', Mname = '" + mname + "', Lname = '" + lname + "', gender = '" + gender + "', phone_number ='" + phone_number + "' where EmployeeID = '" + number + "'";
+                String query = "update employee set Fname = '" + fname + "', Mname = '" + mname + "', Lname = '" + lname + "', gender = '" + gender + "', phone_number ='" + phone_number + "', salary = '" + salary + "' where EmployeeID = '" + number + "'";
                 statement.executeUpdate(query);
                 JOptionPane.showMessageDialog(null, "Details updated successfully");
                 setVisible(false);

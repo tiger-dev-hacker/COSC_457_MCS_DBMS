@@ -6,7 +6,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 public class FindContract extends JFrame {
     private JPanel contentPane;
     private JTextField startDateField;
@@ -15,6 +17,13 @@ public class FindContract extends JFrame {
     private JTextField federalWageScaleField;
     private JTextField ClientID;
     private JTextField signatureDateField;
+    private JTextField ToolField;
+    private JTextField rangeStartField;
+    private JTextField rangeEndField;
+    private JTextField expireBeforeField;
+    private JTextField backgroundCheckExpiryField;
+
+
     private JTable resultsTable;
     private DefaultTableModel tableModel;
     private JButton searchButton;
@@ -45,7 +54,7 @@ public class FindContract extends JFrame {
 
         // Search Criteria Panel
         JPanel criteriaPanel = new JPanel();
-        criteriaPanel.setBounds(30, 60, 920, 180);
+        criteriaPanel.setBounds(30, 60, 920, 260); // Changed from 220 to 260
         criteriaPanel.setBackground(Color.WHITE);
         criteriaPanel.setLayout(null);
         criteriaPanel.setBorder(BorderFactory.createTitledBorder(
@@ -117,7 +126,59 @@ public class FindContract extends JFrame {
         signatureDateField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(signatureDateField); 
         
+        // Row 3: Gender, Job ID
+        JLabel ToolIDLabel = new JLabel("Tool ID");
+        ToolIDLabel.setBounds(300, 110, 90, 25);
+        ToolIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(ToolIDLabel);
 
+        ToolField = new JTextField();
+        ToolField.setBounds(400, 110, 150, 30);
+        ToolField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(ToolField); 
+        
+        JLabel rangeStartLabel = new JLabel("Range Start");
+        rangeStartLabel.setBounds(30, 150, 90, 25);
+        rangeStartLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(rangeStartLabel);
+
+        rangeStartField = new JTextField();
+        rangeStartField.setBounds(120, 150, 150, 30);
+        rangeStartField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(rangeStartField);
+
+        JLabel rangeEndLabel = new JLabel("Range End");
+        rangeEndLabel.setBounds(290, 150, 90, 25);
+        rangeEndLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(rangeEndLabel);
+
+         rangeEndField = new JTextField();
+        rangeEndField.setBounds(390, 150, 150, 30);
+        rangeEndField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(rangeEndField);
+        
+        JLabel expireBeforeLabel = new JLabel("Expire Before");
+        expireBeforeLabel.setBounds(560, 150, 90, 25);
+        expireBeforeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(expireBeforeLabel);
+
+        expireBeforeField = new JTextField();
+        expireBeforeField.setBounds(670, 150, 150, 30);
+        expireBeforeField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        expireBeforeField.setToolTipText("Format: MM/DD/YYYY");
+        criteriaPanel.add(expireBeforeField);
+        
+        JLabel backgroundCheckLabel = new JLabel("BG Check Expired After");
+        backgroundCheckLabel.setBounds(30, 190, 150, 25);
+        backgroundCheckLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(backgroundCheckLabel);
+
+        backgroundCheckExpiryField = new JTextField();
+        backgroundCheckExpiryField.setBounds(190, 190, 150, 30);
+        backgroundCheckExpiryField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        backgroundCheckExpiryField.setToolTipText("Format: MM/DD/YYYY - Finds contracts where background check expired after start");
+        criteriaPanel.add(backgroundCheckExpiryField);
+        
         // Buttons
         searchButton = new JButton("Search");
         searchButton.setBounds(580, 110, 120, 35);
@@ -148,7 +209,7 @@ public class FindContract extends JFrame {
         resultsTable.getTableHeader().setForeground(Color.WHITE);
 
         JScrollPane scrollPane = new JScrollPane(resultsTable);
-        scrollPane.setBounds(30, 260, 920, 230);
+        scrollPane.setBounds(30, 340, 920, 150); // Changed from 300 to 340
         contentPane.add(scrollPane);
 
         // Back Button
@@ -175,13 +236,13 @@ public class FindContract extends JFrame {
         String ssn = startDateField.getText().trim();
         if (!ssn.isEmpty()) {
             query.append(" AND StartDate LIKE ?");
-            parameters.add("%" + ssn + "%");
+            parameters.add("%" + convertDateFormat(ssn) + "%");
         }
 
         String firstName = endDateField.getText().trim();
         if (!firstName.isEmpty()) {
             query.append(" AND EndDate LIKE ?");
-            parameters.add("%" + firstName + "%");
+            parameters.add("%" + convertDateFormat(firstName) + "%");
         }
 
         String middleName = budgetField.getText().trim();
@@ -205,9 +266,75 @@ public class FindContract extends JFrame {
         String gender = signatureDateField.getText().trim();
         if (!gender.isEmpty()) {
             query.append(" AND SignatureDate LIKE ?");
-            parameters.add("%" + gender + "%");
+            parameters.add("%" + convertDateFormat(gender) + "%");
         }
-        // Execute query
+        
+        String tool_id = ToolField.getText().trim();
+        if (!tool_id.isEmpty()) {
+        	if (!ssn.isEmpty() || !firstName.isEmpty() || !middleName.isEmpty() || !lastName.isEmpty() || !phone.isEmpty() || !gender.isEmpty() )
+        	{
+        		query.append(""); 
+        	}
+        	else
+        	{
+        		query = new StringBuilder ("SELECT DISTINCT contract.* FROM contract JOIN used_in ON Contract.ContractID = used_in.ContractID WHERE ToolID = '" + tool_id + "'");
+
+        	}
+            
+        }
+        
+        String rangeStart = rangeStartField.getText().trim();
+        String rangeEnd = rangeEndField.getText().trim();
+
+        if (!rangeStart.isEmpty() && !rangeEnd.isEmpty()) {
+            if(!ssn.isEmpty() || !firstName.isEmpty() || !middleName.isEmpty() || 
+               !lastName.isEmpty() || !phone.isEmpty() || !gender.isEmpty() || !tool_id.isEmpty()) {
+                query.append(""); 
+            } else {
+                query.append(" AND StartDate <= ? AND EndDate >= ?");
+                parameters.add(convertDateFormat(rangeEnd));
+                parameters.add(convertDateFormat(rangeStart));
+            }
+        } else if (!rangeStart.isEmpty() || !rangeEnd.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please provide both Range Start and Range End dates.",
+                "Invalid Range",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        String expireBefore = expireBeforeField.getText().trim();
+        if (!expireBefore.isEmpty()) {
+            if(!ssn.isEmpty() || !firstName.isEmpty() || !middleName.isEmpty() || 
+               !lastName.isEmpty() || !phone.isEmpty() || !gender.isEmpty() || 
+               !tool_id.isEmpty() || (!rangeStart.isEmpty() && !rangeEnd.isEmpty())) {
+               
+                query.append(""); 
+            } else {
+                query.append(" AND EndDate < ?");
+                parameters.add(convertDateFormat(expireBefore));
+            }
+        }
+        
+        String bgCheckExpiry = backgroundCheckExpiryField.getText().trim();
+        if (!bgCheckExpiry.isEmpty()) {
+            if(!ssn.isEmpty() || !firstName.isEmpty() || !middleName.isEmpty() || 
+               !lastName.isEmpty() || !phone.isEmpty() || !gender.isEmpty() || 
+               !tool_id.isEmpty() || (!rangeStart.isEmpty() && !rangeEnd.isEmpty()) ||
+               !expireBefore.isEmpty()) {
+                // Other filters exist, can't use this standalone
+                query.append(""); 
+            } else {
+                // Build complex subquery
+                query = new StringBuilder(
+                    "SELECT contract.* FROM contract " +
+                    "JOIN client ON contract.ClientID = client.ClientID " +
+                    "WHERE DATE_ADD(contract.StartDate, INTERVAL client.BackgroundCheckExpiryLimit DAY) < ?"
+                );
+                parameters.add(convertDateFormat(bgCheckExpiry));
+            }
+        }
+        
         try {
             Connection conn = DriverManager.getConnection(url, user_name, passWord);
 
@@ -242,7 +369,7 @@ public class FindContract extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(this,
                     count + " contracts(s) found.",
-                    "Search Complete",
+                    "Search C	omplete",
                     JOptionPane.INFORMATION_MESSAGE);
             }
 
@@ -266,6 +393,11 @@ public class FindContract extends JFrame {
     	federalWageScaleField.setText("");
     	ClientID.setText("");
     	signatureDateField.setText("");
+    	ToolField.setText("");          
+    	rangeStartField.setText("");   
+    	rangeEndField.setText("");  
+        expireBeforeField.setText("");  
+        backgroundCheckExpiryField.setText(""); 
         tableModel.setRowCount(0);
     }
 
@@ -286,6 +418,24 @@ public class FindContract extends JFrame {
                 button.setBackground(bgColor);
             }
         });
+    }
+    private String convertDateFormat(String date) {
+        if (date == null || date.trim().isEmpty()) {
+            return "";
+        }
+        
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            
+            inputFormat.setLenient(false); // Strict parsing
+            Date parsedDate = inputFormat.parse(date.trim());
+            return outputFormat.format(parsedDate);
+            
+        } catch (ParseException e) {
+            // If parsing fails, return original string
+            return date;
+        }
     }
 
     public static void main(String[] args) {

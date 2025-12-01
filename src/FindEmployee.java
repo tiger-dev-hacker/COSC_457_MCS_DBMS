@@ -16,6 +16,9 @@ public class FindEmployee extends JFrame {
     private JTextField phoneField;
     private JTextField genderField;
     private JTextField jobIdField;
+    private JTextField salaryMinField;
+    private JTextField salaryMaxField;
+    private JTextField salaryExactField;
     private JTable resultsTable;
     private DefaultTableModel tableModel;
     private JButton searchButton;
@@ -28,7 +31,7 @@ public class FindEmployee extends JFrame {
     public FindEmployee() {
         setTitle("Find Employee");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(300, 100, 1000, 600);
+        setBounds(300, 100, 1000, 700);
         setResizable(false);
 
         contentPane = new JPanel();
@@ -46,7 +49,7 @@ public class FindEmployee extends JFrame {
 
         // Search Criteria Panel
         JPanel criteriaPanel = new JPanel();
-        criteriaPanel.setBounds(30, 60, 920, 180);
+        criteriaPanel.setBounds(30, 60, 920, 240);
         criteriaPanel.setBackground(Color.WHITE);
         criteriaPanel.setLayout(null);
         criteriaPanel.setBorder(BorderFactory.createTitledBorder(
@@ -118,7 +121,7 @@ public class FindEmployee extends JFrame {
         genderField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(genderField);
 
-        JLabel jobIdLabel = new JLabel("Job ID");
+        JLabel jobIdLabel = new JLabel("Job ID:");
         jobIdLabel.setBounds(290, 110, 90, 25);
         jobIdLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(jobIdLabel);
@@ -128,21 +131,58 @@ public class FindEmployee extends JFrame {
         jobIdField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(jobIdField);
 
+        // Row 4: Salary filters
+        JLabel salaryLabel = new JLabel("Salary Range:");
+        salaryLabel.setBounds(30, 150, 100, 25);
+        salaryLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        salaryLabel.setForeground(new Color(30, 58, 138));
+        criteriaPanel.add(salaryLabel);
+
+        JLabel salaryMinLabel = new JLabel("Min:");
+        salaryMinLabel.setBounds(30, 180, 40, 25);
+        salaryMinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(salaryMinLabel);
+
+        salaryMinField = new JTextField();
+        salaryMinField.setBounds(75, 180, 120, 30);
+        salaryMinField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(salaryMinField);
+
+        JLabel salaryMaxLabel = new JLabel("Max:");
+        salaryMaxLabel.setBounds(210, 180, 45, 25);
+        salaryMaxLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(salaryMaxLabel);
+
+        salaryMaxField = new JTextField();
+        salaryMaxField.setBounds(260, 180, 120, 30);
+        salaryMaxField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(salaryMaxField);
+
+        JLabel salaryExactLabel = new JLabel("Exact:");
+        salaryExactLabel.setBounds(395, 180, 50, 25);
+        salaryExactLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(salaryExactLabel);
+
+        salaryExactField = new JTextField();
+        salaryExactField.setBounds(450, 180, 120, 30);
+        salaryExactField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(salaryExactField);
+
         // Buttons
         searchButton = new JButton("Search");
-        searchButton.setBounds(580, 110, 120, 35);
+        searchButton.setBounds(600, 175, 120, 35);
         styleButton(searchButton, new Color(20, 184, 166), Color.WHITE);
         criteriaPanel.add(searchButton);
         searchButton.addActionListener(e -> performSearch());
 
         clearButton = new JButton("Clear");
-        clearButton.setBounds(720, 110, 120, 35);
+        clearButton.setBounds(740, 175, 120, 35);
         styleButton(clearButton, new Color(59, 130, 246), Color.WHITE);
         criteriaPanel.add(clearButton);
         clearButton.addActionListener(e -> clearFields());
 
         // Results Table
-        String[] columnNames = {"SSN", "First Name", "Middle Name", "Last Name", "Phone Number", "Gender", "Job ID"};
+        String[] columnNames = {"SSN", "First Name", "Middle Name", "Last Name", "Phone Number", "Gender", "Salary"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -158,12 +198,12 @@ public class FindEmployee extends JFrame {
         resultsTable.getTableHeader().setForeground(Color.WHITE);
 
         JScrollPane scrollPane = new JScrollPane(resultsTable);
-        scrollPane.setBounds(30, 260, 920, 230);
+        scrollPane.setBounds(30, 320, 920, 280);
         contentPane.add(scrollPane);
 
         // Back Button
         backButton = new JButton("Back to Employee Dashboard");
-        backButton.setBounds(340, 510, 280, 40);
+        backButton.setBounds(340, 610, 280, 40);
         styleButton(backButton, new Color(30, 58, 138), Color.WHITE);
         contentPane.add(backButton);
         backButton.addActionListener(e -> {
@@ -218,10 +258,66 @@ public class FindEmployee extends JFrame {
             parameters.add("%" + gender + "%");
         }
 
+        // Salary filters
+        String salaryMin = salaryMinField.getText().trim();
+        String salaryMax = salaryMaxField.getText().trim();
+        String salaryExact = salaryExactField.getText().trim();
+
+        // Exact salary takes priority
+        if (!salaryExact.isEmpty()) {
+            try {
+                Double.parseDouble(salaryExact);
+                query.append(" AND salary = ?");
+                parameters.add(salaryExact);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this,
+                    "Please enter a valid number for exact salary.",
+                    "Invalid Input",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } else {
+            // Apply min and/or max salary filters
+            if (!salaryMin.isEmpty()) {
+                try {
+                    Double.parseDouble(salaryMin);
+                    query.append(" AND salary >= ?");
+                    parameters.add(salaryMin);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this,
+                        "Please enter a valid number for minimum salary.",
+                        "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+
+            if (!salaryMax.isEmpty()) {
+                try {
+                    Double.parseDouble(salaryMax);
+                    query.append(" AND salary <= ?");
+                    parameters.add(salaryMax);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this,
+                        "Please enter a valid number for maximum salary.",
+                        "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+        }
+
         String jobId = jobIdField.getText().trim();
+        
         if (!jobId.isEmpty()) {
-            query.append(" AND job_id LIKE ?");
-            parameters.add("%" + jobId + "%");
+            if (!ssn.isEmpty() || !firstName.isEmpty() || !middleName.isEmpty() || !lastName.isEmpty() || !phone.isEmpty() || !gender.isEmpty() )
+            {
+                query.append(""); 
+            }
+            else
+            {
+                query = new StringBuilder ("SELECT DISTINCT employee.* FROM employee JOIN works_on ON employee.EmployeeID = works_on.EmployeeID WHERE JobID = '" + jobId + "'");
+            }
         }
 
         // Execute query
@@ -246,6 +342,7 @@ public class FindEmployee extends JFrame {
                     rs.getString("Lname"),
                     rs.getString("phone_number"),
                     rs.getString("gender"),
+                    rs.getString("salary")
                 };
                 tableModel.addRow(row);
                 count++;
@@ -284,6 +381,9 @@ public class FindEmployee extends JFrame {
         phoneField.setText("");
         genderField.setText("");
         jobIdField.setText("");
+        salaryMinField.setText("");
+        salaryMaxField.setText("");
+        salaryExactField.setText("");
         tableModel.setRowCount(0);
     }
 

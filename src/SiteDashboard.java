@@ -10,7 +10,7 @@ public class SiteDashboard extends JFrame{
 			private JPanel windowpane;
 			private JButton addEmployeeButton; 
 			private JButton viewEmployeeButton; 
-			private JButton updateEmployeeButton; 
+			private JButton findSiteButton; 
 			private JButton deleteEmployeeButton; 
 			private JButton backToDashboardbtn; 
 
@@ -43,12 +43,19 @@ public class SiteDashboard extends JFrame{
 				viewEmployeeButton.addActionListener(e -> handleViewEmployee()); 
 
 
+				findSiteButton = new JButton("Find Site");
+				findSiteButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
+				findSiteButton.setBounds(300, 300, 250, 74); 
+				windowpane.add(findSiteButton); 
+				findSiteButton.addActionListener(e -> handleFindSite()); 
+
+				
 				deleteEmployeeButton = new JButton("Delete Site");
 				deleteEmployeeButton.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-				deleteEmployeeButton.setBounds(300, 300, 250, 74); 
+				deleteEmployeeButton.setBounds(600, 300, 250, 74); 
 				windowpane.add(deleteEmployeeButton); 
-				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee()); 
-
+				deleteEmployeeButton.addActionListener(e -> handleDeleteEmployee());
+				
 				backToDashboardbtn = new JButton("Back to Client/Site Dashboard");
 				backToDashboardbtn.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
 				backToDashboardbtn.setBounds(300, 450, 300, 74); 
@@ -68,6 +75,11 @@ public class SiteDashboard extends JFrame{
 					setVisible(false); 
 				}
 				
+				private void handleFindSite()
+				{
+					new FindSite(); 
+					setVisible(false); 
+				}
 								
 				private void handleDeleteEmployee() {
 					new DeleteSite(); 

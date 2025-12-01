@@ -22,12 +22,13 @@ public class HREmployee extends JFrame {
 	private JTextField lastname;
 	private JTextField gender;
 	private JTextField mob;
+	private JTextField salary;
 	private JButton btnNewButton;
 	private JButton btnBackButton;
 
 	public HREmployee() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(450, 190, 1014, 597);
+		setBounds(450, 190, 1014, 650);
 		setResizable(false);
 
 		contentPane = new JPanel();
@@ -75,6 +76,13 @@ public class HREmployee extends JFrame {
 		styleLabel(lblEmailAddress, labelBg, lightText);
 		contentPane.add(lblEmailAddress);
 
+		// Salary Label
+		JLabel lblSalary = new JLabel("Salary");
+		lblSalary.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblSalary.setBounds(58, 360, 120, 35);
+		styleLabel(lblSalary, labelBg, lightText);
+		contentPane.add(lblSalary);
+
 		// Last Name Label
 		JLabel lblLastName = new JLabel("Last Name");
 		lblLastName.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -115,6 +123,12 @@ public class HREmployee extends JFrame {
 		styleTextField(middlename, fieldBg, fieldText);
 		contentPane.add(middlename);
 
+		salary = new JTextField();
+		salary.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		salary.setBounds(210, 360, 250, 40);
+		styleTextField(salary, fieldBg, fieldText);
+		contentPane.add(salary);
+
 		lastname = new JTextField();
 		lastname.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lastname.setBounds(690, 120, 250, 40);
@@ -143,10 +157,24 @@ public class HREmployee extends JFrame {
 				String lastName = lastname.getText().trim();
 				String Gender = gender.getText().trim();
 				String mobileNumber = mob.getText().trim();
+				String salaryValue = salary.getText().trim();
 
 				// Validate mobile number
 				if (!mobileNumber.matches("\\d{10}")) {
 					JOptionPane.showMessageDialog(btnNewButton, "Enter a valid 10-digit mobile number");
+					return;
+				}
+
+				// Validate salary
+				if (salaryValue.isEmpty()) {
+					JOptionPane.showMessageDialog(btnNewButton, "Salary cannot be empty");
+					return;
+				}
+
+				try {
+					Double.parseDouble(salaryValue);
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(btnNewButton, "Enter a valid salary amount");
 					return;
 				}
 
@@ -156,8 +184,8 @@ public class HREmployee extends JFrame {
 					String url = "jdbc:mysql://localhost:3306/mcs";
 					Connection conn = DriverManager.getConnection(url, user_name, passWord);
 
-					String query = "INSERT INTO Employee (SSN, gender, Fname, Mname, Lname, phone_number) " +
-							"VALUES (?, ?, ?, ?, ?, ?)";
+					String query = "INSERT INTO Employee (SSN, gender, Fname, Mname, Lname, phone_number, salary) " +
+							"VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 					PreparedStatement pst = conn.prepareStatement(query);
 					pst.setString(1, Ssn);
@@ -166,6 +194,7 @@ public class HREmployee extends JFrame {
 					pst.setString(4, middleName);
 					pst.setString(5, lastName);
 					pst.setString(6, mobileNumber);
+					pst.setDouble(7, Double.parseDouble(salaryValue));
 
 					int x = pst.executeUpdate();
 
@@ -180,6 +209,7 @@ public class HREmployee extends JFrame {
 						lastname.setText("");
 						gender.setText("");
 						mob.setText("");
+						salary.setText("");
 					}
 
 					conn.close();
@@ -190,14 +220,14 @@ public class HREmployee extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		btnNewButton.setBounds(230, 380, 220, 70);
+		btnNewButton.setBounds(230, 450, 220, 70);
 		styleButton(btnNewButton, new Color(34, 197, 94), lightText, 20); // Green for Register
 		contentPane.add(btnNewButton);
 
 		// Back Button
 		btnBackButton = new JButton("Back to Dashboard");
 		btnBackButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		btnBackButton.setBounds(520, 380, 280, 70);
+		btnBackButton.setBounds(520, 450, 280, 70);
 		styleButton(btnBackButton, mediumBlue, lightText, 20);
 		contentPane.add(btnBackButton);
 		btnBackButton.addActionListener(e -> handleBackButton());
