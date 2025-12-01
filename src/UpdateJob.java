@@ -1,7 +1,3 @@
-
-
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,132 +8,253 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class UpdateJob extends JFrame implements ActionListener {
-	String user_name = "root"; 
-	String passWord = "Keyboard30%$";
-	String url = "jdbc:mysql://localhost:3306/mcs";
-	
+    String user_name = "root";
+    String passWord = "Keyboard30%$";
+    String url = "jdbc:mysql://localhost:3306/mcs";
+
     JTextField job_name, job_length, contract_id;
     JLabel tempid;
-    JButton add,back;
+    JButton updateBtn, backBtn;
     String number;
-   
-    public UpdateJob (String number){
 
+    public UpdateJob(String number) {
         this.number = number;
-        getContentPane().setBackground(new Color(163,255,188));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Update Job Details");
 
+        // Background
+        getContentPane().setBackground(new Color(15, 23, 42)); // Dark slate
+
+        // Colors
+        Color darkBlue = new Color(30, 58, 138);
+        Color updateColor = new Color(34, 197, 94); // Green
+        Color backColor = new Color(100, 116, 139); // Gray
+        Color lightText = Color.WHITE;
+        Color labelBg = new Color(51, 65, 85); // Slate gray
+        Color fieldBg = new Color(248, 250, 252); // Light gray
+        Color fieldText = new Color(30, 30, 30);
+        Color idBg = new Color(59, 130, 246); // Blue highlight for ID
+
+        // Title
         JLabel heading = new JLabel("Update Job Details");
-        heading.setBounds(320,30,300,50);
-        heading.setFont(new Font("serif", Font.BOLD,25));
+        heading.setBounds(250, 25, 500, 60);
+        heading.setFont(new Font("Segoe UI", Font.BOLD, 38));
+        heading.setForeground(lightText);
+        heading.setBackground(darkBlue);
+        heading.setOpaque(true);
+        heading.setHorizontalAlignment(JLabel.CENTER);
         add(heading);
-      
-        JLabel JobID = new JLabel("Job ID");
-        JobID.setBounds(50,150,120,30);
-        JobID.setFont(new Font("SAN_SERIF", Font.BOLD,20));
-        add(JobID);
-        
-        tempid = new JLabel("" + this.number);
-        tempid.setBounds(200,150,150,30);
-        tempid.setFont(new Font("SAN_SERIF", Font.BOLD,20));
-        tempid.setBackground(new Color(177,252,197));
+
+        // Job ID
+        JLabel jobIDLabel = new JLabel("Job ID");
+        jobIDLabel.setBounds(100, 130, 200, 35);
+        jobIDLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(jobIDLabel, labelBg, lightText);
+        add(jobIDLabel);
+
+        tempid = new JLabel(number);
+        tempid.setBounds(320, 125, 500, 45);
+        tempid.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        tempid.setForeground(lightText);
+        tempid.setBackground(idBg);
+        tempid.setOpaque(true);
+        tempid.setHorizontalAlignment(JLabel.CENTER);
+        tempid.setBorder(BorderFactory.createCompoundBorder(
+                new javax.swing.border.LineBorder(idBg, 2, true),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
         add(tempid);
 
-        
-        JLabel jobName = new JLabel("Job Name");
-        jobName.setBounds(50,200,120,30);
-        jobName.setFont(new Font("SAN_SERIF", Font.BOLD,20));
-        add(jobName);
-        
+        // Job Name
+        JLabel jobNameLabel = new JLabel("Job Name");
+        jobNameLabel.setBounds(100, 210, 200, 35);
+        jobNameLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(jobNameLabel, labelBg, lightText);
+        add(jobNameLabel);
+
         job_name = new JTextField();
-        job_name.setBounds(200,200,150,30);
-        job_name.setBackground(new Color(177,252,197));
+        job_name.setBounds(320, 205, 500, 45);
+        job_name.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        styleTextField(job_name, fieldBg, fieldText);
         add(job_name);
 
-        JLabel toolManifest = new JLabel("Job Length (In weeks)");
-        toolManifest.setBounds(50,250,250,30);
-        toolManifest.setFont(new Font("SAN_SERIF", Font.BOLD,20));
-        add(toolManifest);
-        
+        // Job Length
+        JLabel jobLengthLabel = new JLabel("Job Length (weeks)");
+        jobLengthLabel.setBounds(100, 290, 200, 35);
+        jobLengthLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(jobLengthLabel, labelBg, lightText);
+        add(jobLengthLabel);
+
         job_length = new JTextField();
-        job_length.setBounds(300,250,150,30);
-        job_length.setBackground(new Color(177,252,197));
+        job_length.setBounds(320, 285, 500, 45);
+        job_length.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        styleTextField(job_length, fieldBg, fieldText);
         add(job_length);
-        
-        JLabel lblContractID = new JLabel("Contract ID ");
-        lblContractID.setBounds(50,300,120,30);
-        lblContractID.setFont(new Font("SAN_SERIF", Font.BOLD,20));
-        add(lblContractID);
-        
+
+        // Contract ID
+        JLabel contractLabel = new JLabel("Contract ID");
+        contractLabel.setBounds(100, 370, 200, 35);
+        contractLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        styleLabel(contractLabel, labelBg, lightText);
+        add(contractLabel);
+
         contract_id = new JTextField();
-        contract_id.setBounds(200,300,150,30);
-        contract_id.setBackground(new Color(177,252,197));
+        contract_id.setBounds(320, 365, 500, 45);
+        contract_id.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        styleTextField(contract_id, fieldBg, fieldText);
         add(contract_id);
-        
-        
-        
-       
-      
-//
+
+        // Load data
         try {
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
-   			Statement statement = conn.createStatement();            
-   			String query = "select * from job where JobID = '"+ number +"'";
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()){
-            	job_name.setText(resultSet.getString("JobName"));
-            	job_length.setText(resultSet.getString("JobLength"));
-            	contract_id.setText(resultSet.getString("ContractID"));
-
-
+            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM job WHERE JobID='" + number + "'");
+            if (rs.next()) {
+                job_name.setText(rs.getString("JobName"));
+                job_length.setText(rs.getString("JobLength"));
+                contract_id.setText(rs.getString("ContractID"));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Buttons
+        updateBtn = new JButton("UPDATE JOB");
+        updateBtn.setBounds(300, 470, 250, 80);
+        updateBtn.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        updateBtn.addActionListener(this);
+        styleButton(updateBtn, updateColor, lightText, 20);
+        add(updateBtn);
 
-        add = new JButton("UPDATE");
-        add.setBounds(450,550,150,40);
-        add.setBackground(Color.black);
-        add.setForeground(Color.WHITE);
-        add.addActionListener(this);
-        add(add);
+        backBtn = new JButton("BACK");
+        backBtn.setBounds(600, 470, 250, 80);
+        backBtn.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        backBtn.addActionListener(this);
+        styleButton(backBtn, backColor, lightText, 20);
+        add(backBtn);
 
-        back = new JButton("BACK");
-        back.setBounds(250,550,150,40);
-        back.setBackground(Color.black);
-        back.setForeground(Color.WHITE);
-        back.addActionListener(this);
-        add(back);
+        // Info Panel
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(null);
+        infoPanel.setBounds(100, 570, 720, 60);
+        infoPanel.setBackground(new Color(30, 41, 59));
+        infoPanel.setBorder(BorderFactory.createLineBorder(new Color(71, 85, 105), 2, true));
 
+        JLabel infoLabel = new JLabel("💡 Tip: Ensure all details are valid before updating.");
+        infoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        infoLabel.setForeground(new Color(226, 232, 240));
+        infoLabel.setBounds(20, 15, 680, 30);
+        infoPanel.add(infoLabel);
 
-        setSize(900,700);
+        add(infoPanel);
+
+        setSize(1000, 700);
         setLayout(null);
-        setLocation(300,50);
+        setLocation(250, 50);
         setVisible(true);
+    }
 
+    private void styleLabel(JLabel label, Color bg, Color fg) {
+        label.setBackground(bg);
+        label.setForeground(fg);
+        label.setOpaque(true);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setBorder(new javax.swing.border.LineBorder(bg, 2, true));
+    }
+
+    private void styleTextField(JTextField field, Color bg, Color fg) {
+        field.setBackground(bg);
+        field.setForeground(fg);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                new javax.swing.border.LineBorder(new Color(59, 130, 246), 2, true),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+    }
+
+    private void styleButton(JButton button, Color bgColor, Color fgColor, int radius) {
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setContentAreaFilled(false);
+
+        button.setBorder(new javax.swing.border.LineBorder(bgColor, 2, true));
+
+        button.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setColor(button.getBackground());
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), radius, radius);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            Color original = bgColor;
+
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(brighten(original, 30));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(original);
+            }
+
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                button.setBackground(darken(original, 20));
+            }
+
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                button.setBackground(brighten(original, 30));
+            }
+        });
+    }
+
+    private Color brighten(Color color, int amt) {
+        return new Color(
+                Math.min(255, color.getRed() + amt),
+                Math.min(255, color.getGreen() + amt),
+                Math.min(255, color.getBlue() + amt)
+        );
+    }
+
+    private Color darken(Color color, int amt) {
+        return new Color(
+                Math.max(0, color.getRed() - amt),
+                Math.max(0, color.getGreen() - amt),
+                Math.max(0, color.getBlue() - amt)
+        );
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == add){
-          String jName = job_name.getText();
-          String jLength = job_length.getText();
-          String contractID = contract_id.getText(); 
-          try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
-  			Statement statement = conn.createStatement();
-             String query = "update job set JobName = '"+ jName +"', JobLength = '"+ jLength + "', ContractID = '"  + contractID +"'  where JobID = '"+ number +"'";
-              statement.executeUpdate(query);
-              JOptionPane.showMessageDialog(null, "Job Details updated successfully");
-              setVisible(false);
-              new JobDashboard();
-          }catch (Exception E){
-              E.printStackTrace();
-          }
-      }else {
-          setVisible(false);
-          new ViewJob();
-      }
+        if (e.getSource() == updateBtn) {
+            String jName = job_name.getText().trim();
+            String jLength = job_length.getText().trim();
+            String contractID = contract_id.getText().trim();
+
+            try {
+                Connection conn = DriverManager.getConnection(url, user_name, passWord);
+                Statement statement = conn.createStatement();
+                statement.executeUpdate("UPDATE job SET JobName='" + jName +
+                        "', JobLength='" + jLength + "', ContractID='" + contractID +
+                        "' WHERE JobID='" + number + "'");
+                JOptionPane.showMessageDialog(null, "Job details updated successfully!");
+                setVisible(false);
+                new ViewJob();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (e.getSource() == backBtn) {
+            setVisible(false);
+            new ViewJob();
+        }
     }
 
     public static void main(String[] args) {

@@ -157,16 +157,18 @@ public class FindContract extends JFrame {
         rangeEndField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(rangeEndField);
         
+     // Move Expire Before Label and Field above buttons
         JLabel expireBeforeLabel = new JLabel("Expire Before");
-        expireBeforeLabel.setBounds(560, 150, 90, 25);
+        expireBeforeLabel.setBounds(580, 70, 90, 25); // x, y above buttons
         expireBeforeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(expireBeforeLabel);
 
         expireBeforeField = new JTextField();
-        expireBeforeField.setBounds(670, 150, 150, 30);
+        expireBeforeField.setBounds(680, 70, 150, 30); // aligned with label
         expireBeforeField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         expireBeforeField.setToolTipText("Format: MM/DD/YYYY");
         criteriaPanel.add(expireBeforeField);
+
         
         JLabel backgroundCheckLabel = new JLabel("BG Check Expired After");
         backgroundCheckLabel.setBounds(30, 190, 150, 25);
@@ -179,7 +181,7 @@ public class FindContract extends JFrame {
         backgroundCheckExpiryField.setToolTipText("Format: MM/DD/YYYY - Finds contracts where background check expired after start");
         criteriaPanel.add(backgroundCheckExpiryField);
         
-        // Buttons
+     // Buttons
         searchButton = new JButton("Search");
         searchButton.setBounds(580, 110, 120, 35);
         styleButton(searchButton, new Color(20, 184, 166), Color.WHITE);

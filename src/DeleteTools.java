@@ -17,14 +17,14 @@ public class DeleteTools extends JFrame implements ActionListener {
     JButton delete, back;
     public DeleteTools(){
 
-        JLabel label = new JLabel("Tool ID");
-        label.setBounds(50,50,100,30);
-        label.setFont(new Font("Tahoma", Font.BOLD,15));
-        add(label);
+    	JLabel label = new JLabel("Tool ID");
+    	label.setBounds(50, 50, 150, 30);
+    	label.setFont(new Font("Tahoma", Font.BOLD, 15));
+    	add(label);
 
-        choiceEMPID = new Choice();
-        choiceEMPID.setBounds(200,50,150,30);
-        add(choiceEMPID);
+    	choiceEMPID = new Choice();
+    	choiceEMPID.setBounds(200, 50, 200, 30);
+    	add(choiceEMPID);
 
         try{
         	Connection conn = DriverManager.getConnection(url, user_name, passWord);
@@ -38,21 +38,23 @@ public class DeleteTools extends JFrame implements ActionListener {
         }
 
         JLabel labelName = new JLabel("Tool Name");
-        labelName.setBounds(50,100,100,30);
-        labelName.setFont(new Font("Tahoma", Font.BOLD,15));
+        labelName.setBounds(50, 100, 150, 30);
+        labelName.setFont(new Font("Tahoma", Font.BOLD, 15));
         add(labelName);
 
         JLabel textName = new JLabel();
-        textName.setBounds(200,100,100,30);
+        textName.setBounds(200, 100, 300, 30);  // Wider so text is visible
+        textName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         add(textName);
 
         JLabel labelPhone = new JLabel("Tool Manifest");
-        labelPhone.setBounds(50,150,100,30);
-        labelPhone.setFont(new Font("Tahoma", Font.BOLD,15));
+        labelPhone.setBounds(50, 150, 150, 30);
+        labelPhone.setFont(new Font("Tahoma", Font.BOLD, 15));
         add(labelPhone);
 
         JLabel textPhone = new JLabel();
-        textPhone.setBounds(200,150,100,30);
+        textPhone.setBounds(200, 150, 300, 30);  // Wider for long manifests
+        textPhone.setFont(new Font("Tahoma", Font.PLAIN, 14));
         add(textPhone);
 
         try {
@@ -125,7 +127,7 @@ public class DeleteTools extends JFrame implements ActionListener {
             try {
             	Connection conn = DriverManager.getConnection(url, user_name, passWord);
        			Statement statement = conn.createStatement();         
-                String query = "delete from tool where ToolID = '"+choiceEMPID.getSelectedItem()+"' CASCADE";
+                String query = "delete from tool where ToolID = '"+choiceEMPID.getSelectedItem()+"' ";
                 int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()
 
                 if (rowsDeleted > 0) {

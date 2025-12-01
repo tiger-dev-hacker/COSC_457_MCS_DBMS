@@ -140,7 +140,7 @@ public class DeleteJob extends JFrame implements ActionListener {
             try {
             	Connection conn = DriverManager.getConnection(url, user_name, passWord);
        			Statement statement = conn.createStatement();         
-                String query = "delete from job where JobID = '"+choiceEMPID.getSelectedItem()+"' CASCADE";
+                String query = "delete from job where JobID = '"+choiceEMPID.getSelectedItem()+"'";
                 int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()
 
                 if (rowsDeleted > 0) {

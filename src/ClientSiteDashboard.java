@@ -1,9 +1,9 @@
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-
+import java.awt.Cursor;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public class ClientSiteDashboard extends JFrame {
 
@@ -11,84 +11,128 @@ public class ClientSiteDashboard extends JFrame {
 		setSize(1366, 565);
 		setLocation(100, 100);
 		setLayout(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Scale the image to fit the frame
-		ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("images/office.jpg"));
+		ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("images/construction-site-client-visit.jpg"));
 		Image img = i1.getImage();
 		Image scaledImg = img.getScaledInstance(1366, 565, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImg);
-		
+
 		JLabel image = new JLabel(scaledIcon);
 		image.setBounds(0, 0, 1366, 565);
-		
-		JLabel text = new JLabel("Welcome to Management and Construction Services LLC. "); 
-		
-		text.setBounds(130, 40, 1100, 90);
-		text.setForeground(Color.WHITE); 
-		text.setFont(new Font("sans serif", Font.BOLD, 40 )); 
-		
-		// Add custom pink background
-		Color customPink = new Color(0xF53DB0); // Light pink
-		text.setBackground(customPink);
-		text.setOpaque(true); // Important: makes the background visible
 
+		// Enhanced title with gradient-like effect using layered panels
+		JPanel titlePanel = new JPanel();
+		titlePanel.setLayout(null);
+		titlePanel.setBounds(80, 40, 1200, 100);
+		titlePanel.setBackground(new Color(0, 0, 0, 150)); // Semi-transparent black
+		titlePanel.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createLineBorder(new Color(245, 61, 176), 3),
+			new EmptyBorder(10, 20, 10, 20)
+		));
+
+		JLabel text = new JLabel("Dashboard for Clients and Sites");
+		text.setBounds(0, 0, 1200, 100);
+		text.setForeground(Color.WHITE);
+		text.setFont(new Font("Arial", Font.BOLD, 46));
+		text.setHorizontalAlignment(SwingConstants.CENTER);
+		text.setVerticalAlignment(SwingConstants.CENTER);
 		
-		image.add(text); 
-		setVisible(true); 
+		titlePanel.add(text);
+		image.add(titlePanel);
+
+		// Button styling colors
+		Color clientColor = new Color(52, 152, 219); // Modern blue
+		Color siteColor = new Color(46, 204, 113); // Modern green
+		Color backColor = new Color(231, 76, 60); // Modern red
 		
-		JButton btnHREmployees; 
-		btnHREmployees = new JButton("Client"); 
-		btnHREmployees.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-		btnHREmployees.setBounds(300, 400, 200, 90); 
-		image.add(btnHREmployees); 
-		
-		btnHREmployees.addActionListener(e -> handleClientClick()); 
-		
-		
-		JButton btnBusinessClient; 
-		btnBusinessClient = new JButton("Site"); 
-		btnBusinessClient.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-		btnBusinessClient.setBounds(600, 400, 200, 90); 
-		
-		image.add(btnBusinessClient); 
-		btnBusinessClient.addActionListener(e -> handleSiteClick()); 
-		
-		JButton btnBackClient; 
-		btnBackClient = new JButton("Back to Business Dashboard"); 
-		btnBackClient.setFont(new Font("Tahoma", Font.PLAIN, 22)); 
-		btnBackClient.setBounds(900, 400, 400, 90); 
-		
-		image.add(btnBackClient); 
-		btnBackClient.addActionListener(e -> handleBackClick()); 
+		// Client Button
+		JButton btnClient = createStyledButton("Client", clientColor);
+		btnClient.setBounds(250, 380, 250, 100);
+		btnClient.addActionListener(e -> handleClientClick());
+		image.add(btnClient);
+
+		// Site Button
+		JButton btnSite = createStyledButton("Site", siteColor);
+		btnSite.setBounds(558, 380, 250, 100);
+		btnSite.addActionListener(e -> handleSiteClick());
+		image.add(btnSite);
+
+		// Back Button
+		JButton btnBack = createStyledButton("Back to Business Dashboard", backColor);
+		btnBack.setBounds(866, 380, 400, 100);
+		btnBack.setFont(new Font("Arial", Font.BOLD, 20));
+		btnBack.addActionListener(e -> handleBackClick());
+		image.add(btnBack);
 
 		add(image);
+		setVisible(true);
+	}
 
+	// Helper method to create styled buttons
+	private JButton createStyledButton(String text, Color bgColor) {
+		JButton button = new JButton(text);
+		button.setFont(new Font("Arial", Font.BOLD, 24));
+		button.setForeground(Color.WHITE);
+		button.setBackground(bgColor);
+		button.setFocusPainted(false);
+		button.setBorderPainted(false);
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		button.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createLineBorder(Color.WHITE, 2),
+			new EmptyBorder(10, 20, 10, 20)
+		));
 		
+		// Add hover effect
+		button.addMouseListener(new java.awt.event.MouseAdapter() {
+			Color originalColor = bgColor;
+			
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				button.setBackground(brightenColor(originalColor));
+				button.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createLineBorder(Color.YELLOW, 3),
+					new EmptyBorder(10, 20, 10, 20)
+				));
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				button.setBackground(originalColor);
+				button.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createLineBorder(Color.WHITE, 2),
+					new EmptyBorder(10, 20, 10, 20)
+				));
+			}
+		});
+		
+		return button;
 	}
-	
-	// Method to handle HR/Employees button click
+
+	// Helper method to brighten colors on hover
+	private Color brightenColor(Color color) {
+		int r = Math.min(255, color.getRed() + 40);
+		int g = Math.min(255, color.getGreen() + 40);
+		int b = Math.min(255, color.getBlue() + 40);
+		return new Color(r, g, b);
+	}
+
+	// Method to handle Client button click
 	private void handleClientClick() {
-		new ClientDashboard(); // Call external class from same package
-		setVisible(false); // Hide current frame (optional)
-		// Or use: dispose(); to close the frame completely
+		new ClientDashboard();
+		setVisible(false);
 	}
-	
+
 	private void handleSiteClick() {
-		new SiteDashboard(); // Call external class from same package
-		setVisible(false); // Hide current frame (optional)
+		new SiteDashboard();
+		setVisible(false);
 	}
 
 	private void handleBackClick() {
-		new BusinessDashboard(); // Call external class from same package
-		setVisible(false); // Hide current frame (optional)
+		new BusinessDashboard();
+		setVisible(false);
 	}
-	
 
-	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		new ClientSiteDashboard(); 
+		SwingUtilities.invokeLater(() -> new ClientSiteDashboard());
 	}
-
 }
