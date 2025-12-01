@@ -142,32 +142,33 @@ public class DeleteContract extends JFrame implements ActionListener {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource()==delete){
-            try {
-            	Connection conn = DriverManager.getConnection(url, user_name, passWord);
-       			Statement statement = conn.createStatement();         
-                String query = "delete from contract where ContractID = '"+choiceEMPID.getSelectedItem()+"' CASCADE";
-                int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()
+    	@Override
+    	public void actionPerformed(ActionEvent e) {
+    	    if (e.getSource()==delete){
+    	        try (Connection conn = DriverManager.getConnection(url, user_name, passWord);
+    	             Statement statement = conn.createStatement()) {
+    	            
+    	        	String contractID = choiceEMPID.getSelectedItem();
+    	        	String query = "delete from contract where ContractID = "+contractID+"";
+    	        	int rowsDeleted = statement.executeUpdate(query);
 
-                if (rowsDeleted > 0) {
-                    JOptionPane.showMessageDialog(null, "Contract deleted successfully!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Contract ID not found!");
-                }
-                setVisible(false);
-                new ContractDashboard();
+    	            if (rowsDeleted > 0) {
+    	                JOptionPane.showMessageDialog(null, "Contract deleted successfully!");
+    	                setVisible(false);
+    	                new ContractDashboard();
+    	            } else {
+    	                JOptionPane.showMessageDialog(null, "Contract ID not found!");
+    	            }
 
-            }catch (Exception E){
-                E.printStackTrace();
-            }
-        }else {
-        	new ContractDashboard(); 
-            setVisible(false);
-        }
-    }
-
+    	        } catch (Exception E){
+    	            E.printStackTrace();
+    	            JOptionPane.showMessageDialog(null, "Error: " + E.getMessage());
+    	        }
+    	    } else {
+    	        new ContractDashboard(); 
+    	        setVisible(false);
+    	    }
+    	}
     public static void main(String[] args) {
         new DeleteContract();
     }

@@ -42,69 +42,69 @@ public class FindJob extends JFrame {
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
         titleLabel.setForeground(new Color(30, 58, 138));
         contentPane.add(titleLabel);
-
-        // Search Criteria Panel
         JPanel criteriaPanel = new JPanel();
         criteriaPanel.setBounds(30, 60, 920, 180);
         criteriaPanel.setBackground(Color.WHITE);
         criteriaPanel.setLayout(null);
         criteriaPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(30, 58, 138), 2),
-            "Search Criteria (Leave empty to ignore)",
-            0, 0, new Font("Segoe UI", Font.BOLD, 14), new Color(30, 58, 138)));
+                BorderFactory.createLineBorder(new Color(30, 58, 138), 2),
+                "Search Criteria (Leave empty to ignore)",
+                0, 0, new Font("Segoe UI", Font.BOLD, 14), new Color(30, 58, 138)));
         contentPane.add(criteriaPanel);
 
-        // Row 1: SSN, First Name, Middle Name
-        JLabel ssnLabel = new JLabel("Job Name");
-        ssnLabel.setBounds(30, 30, 80, 25);
-        ssnLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(ssnLabel);
+
+     // Row 1
+        JLabel jobNameLabel = new JLabel("Job Name");
+        jobNameLabel.setBounds(30, 30, 120, 25);
+        jobNameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(jobNameLabel);
 
         jobNameField = new JTextField();
-        jobNameField.setBounds(120, 30, 150, 30);
+        jobNameField.setBounds(150, 30, 180, 30);
         jobNameField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(jobNameField);
-        
-        JLabel firstnameLabel = new JLabel("Job Length (In weeks)");
-        firstnameLabel.setBounds(290, 30, 90, 25);
-        firstnameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(firstnameLabel);
+
+        JLabel jobLengthLabel = new JLabel("Job Length (weeks)");
+        jobLengthLabel.setBounds(360, 30, 150, 25);
+        jobLengthLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(jobLengthLabel);
 
         jobLengthField = new JTextField();
-        jobLengthField.setBounds(390, 30, 150, 30);
+        jobLengthField.setBounds(520, 30, 180, 30);
         jobLengthField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(jobLengthField);
-        
-        JLabel contractIDLabel = new JLabel("Contract ID");
-        contractIDLabel.setBounds(290, 60, 90, 25);
-        contractIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(contractIDLabel);
 
-        contractIDField = new JTextField();
-        contractIDField.setBounds(390, 60, 150, 30);
-        contractIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(contractIDField);
-
+        // Row 2
         JLabel employeeIDLabel = new JLabel("Employee ID");
-        employeeIDLabel.setBounds(30, 60, 80, 25);
+        employeeIDLabel.setBounds(30, 70, 120, 25);
         employeeIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(employeeIDLabel);
 
         EmployeeIDField = new JTextField();
-        EmployeeIDField.setBounds(120, 60, 150, 30);
+        EmployeeIDField.setBounds(150, 70, 180, 30);
         EmployeeIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(EmployeeIDField);
-        
+
+        JLabel contractIDLabel = new JLabel("Contract ID");
+        contractIDLabel.setBounds(360, 70, 120, 25);
+        contractIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(contractIDLabel);
+
+        contractIDField = new JTextField();
+        contractIDField.setBounds(520, 70, 180, 30);
+        contractIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(contractIDField);
+
 
         // Buttons
         searchButton = new JButton("Search");
-        searchButton.setBounds(580, 110, 120, 35);
+        searchButton.setBounds(720, 30, 150, 35);
         styleButton(searchButton, new Color(20, 184, 166), Color.WHITE);
         criteriaPanel.add(searchButton);
         searchButton.addActionListener(e -> performSearch());
 
         clearButton = new JButton("Clear");
-        clearButton.setBounds(720, 110, 120, 35);
+        clearButton.setBounds(720, 75, 150, 35);
         styleButton(clearButton, new Color(59, 130, 246), Color.WHITE);
         criteriaPanel.add(clearButton);
         clearButton.addActionListener(e -> clearFields());

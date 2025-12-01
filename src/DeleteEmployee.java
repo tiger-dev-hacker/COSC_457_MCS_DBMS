@@ -221,7 +221,7 @@ public class DeleteEmployee extends JFrame implements ActionListener {
             try {
                 Connection conn = DriverManager.getConnection(url, user_name, passWord);
                 Statement statement = conn.createStatement();
-                String query = "delete from employee where EmployeeID = '" + choiceEMPID.getSelectedItem() + "' CASCADE";
+                String query = "delete from employee where EmployeeID = '" + choiceEMPID.getSelectedItem() + "'";
                 int rowsDeleted = statement.executeUpdate(query);
 
                 if (rowsDeleted > 0) {

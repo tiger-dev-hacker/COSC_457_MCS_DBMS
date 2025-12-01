@@ -41,59 +41,59 @@ public class FindTools extends JFrame {
         titleLabel.setForeground(new Color(30, 58, 138));
         contentPane.add(titleLabel);
 
-        // Search Criteria Panel
+     // Search Criteria Panel
         JPanel criteriaPanel = new JPanel();
         criteriaPanel.setBounds(30, 60, 920, 180);
         criteriaPanel.setBackground(Color.WHITE);
         criteriaPanel.setLayout(null);
         criteriaPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(30, 58, 138), 2),
-            "Search Criteria (Leave empty to ignore)",
-            0, 0, new Font("Segoe UI", Font.BOLD, 14), new Color(30, 58, 138)));
+                BorderFactory.createLineBorder(new Color(30, 58, 138), 2),
+                "Search Criteria (Leave empty to ignore)",
+                0, 0, new Font("Segoe UI", Font.BOLD, 14), new Color(30, 58, 138)));
         contentPane.add(criteriaPanel);
 
-        // Row 1: SSN, First Name, Middle Name
-        JLabel ssnLabel = new JLabel("Tool Name");
-        ssnLabel.setBounds(30, 30, 80, 25);
-        ssnLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(ssnLabel);
+        // Row: Tool Name
+        JLabel toolNameLabel = new JLabel("Tool Name");
+        toolNameLabel.setBounds(30, 30, 90, 25);
+        toolNameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(toolNameLabel);
 
         toolNameField = new JTextField();
         toolNameField.setBounds(120, 30, 150, 30);
         toolNameField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(toolNameField);
-        
-        JLabel firstnameLabel = new JLabel("Tool Manifest");
-        firstnameLabel.setBounds(290, 30, 90, 25);
-        firstnameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        criteriaPanel.add(firstnameLabel);
+
+        // Row: Tool Manifest
+        JLabel manifestLabel = new JLabel("Tool Manifest");
+        manifestLabel.setBounds(290, 30, 100, 25);
+        manifestLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        criteriaPanel.add(manifestLabel);
 
         toolManifestField = new JTextField();
         toolManifestField.setBounds(390, 30, 150, 30);
         toolManifestField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(toolManifestField);
 
-        JLabel contractIDLabel = new JLabel("ContractID");
-        contractIDLabel.setBounds(290, 60, 90, 25);
+        // Row: Contract ID (Moved to the right)
+        JLabel contractIDLabel = new JLabel("Contract ID");
+        contractIDLabel.setBounds(560, 30, 100, 25);
         contractIDLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(contractIDLabel);
 
         contractIDField = new JTextField();
-        contractIDField.setBounds(390, 60, 150, 30);
+        contractIDField.setBounds(660, 30, 150, 30);
         contractIDField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         criteriaPanel.add(contractIDField);
 
-        
-
-        // Buttons
+        // Buttons (Repositioned)
         searchButton = new JButton("Search");
-        searchButton.setBounds(580, 110, 120, 35);
+        searchButton.setBounds(560, 80, 120, 35);
         styleButton(searchButton, new Color(20, 184, 166), Color.WHITE);
         criteriaPanel.add(searchButton);
         searchButton.addActionListener(e -> performSearch());
 
         clearButton = new JButton("Clear");
-        clearButton.setBounds(720, 110, 120, 35);
+        clearButton.setBounds(700, 80, 120, 35);
         styleButton(clearButton, new Color(59, 130, 246), Color.WHITE);
         criteriaPanel.add(clearButton);
         clearButton.addActionListener(e -> clearFields());
@@ -218,6 +218,8 @@ public class FindTools extends JFrame {
     private void clearFields() {
     	toolNameField.setText("");
         toolManifestField.setText("");
+        contractIDField.setText("");
+
         tableModel.setRowCount(0);
     }
 
