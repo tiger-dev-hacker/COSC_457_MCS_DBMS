@@ -105,11 +105,7 @@ public class AddTools extends JFrame {
                 }
 
                 try {
-                    String user_name = "root";
-                    String passWord = "Keyboard30%$";
-                    String url = "jdbc:mysql://localhost:3306/mcs";
-
-                    Connection conn = DriverManager.getConnection(url, user_name, passWord);
+					Connection conn = DatabaseConnection.getConnection();
 
                     String query = "INSERT INTO Tool (ToolName, ToolManifest) VALUES (?, ?)";
 
@@ -127,7 +123,6 @@ public class AddTools extends JFrame {
                         tool_manifest.setText("");
                     }
 
-                    conn.close();
                 } catch (Exception exception) {
                     exception.printStackTrace();
                     JOptionPane.showMessageDialog(btnRegister,

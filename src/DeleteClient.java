@@ -13,9 +13,7 @@ import java.sql.Statement;
 
 public class DeleteClient extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+   
     Choice choiceEMPID;
     JButton delete, back;
     JLabel textName, textPhone;
@@ -92,14 +90,14 @@ public class DeleteClient extends JFrame implements ActionListener {
         choiceEMPID.setForeground(new Color(30, 30, 30));
         contentPane.add(choiceEMPID);
 
+    	Connection conn = DatabaseConnection.getConnection();
+
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from client");
             while (resultSet.next()) {
                 choiceEMPID.add(resultSet.getString("ClientID"));
             }
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading clients: " + e.getMessage(),
@@ -154,16 +152,16 @@ public class DeleteClient extends JFrame implements ActionListener {
         ));
         contentPane.add(textPhone);
 
+    	conn = DatabaseConnection.getConnection();
         // Load initial data
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from client where ClientID = '" + choiceEMPID.getSelectedItem() + "'");
             while (resultSet.next()) {
                 textName.setText(resultSet.getString("ClientName"));
                 textPhone.setText(resultSet.getString("BackgroundCheckExpiryLimit"));
             }
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -173,14 +171,13 @@ public class DeleteClient extends JFrame implements ActionListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 try {
-                    Connection conn = DriverManager.getConnection(url, user_name, passWord);
+                	Connection conn = DatabaseConnection.getConnection();
                     Statement statement = conn.createStatement();
                     ResultSet resultSet = statement.executeQuery("select * from client where ClientID = '" + choiceEMPID.getSelectedItem() + "'");
                     while (resultSet.next()) {
                         textName.setText(resultSet.getString("ClientName"));
                         textPhone.setText(resultSet.getString("BackgroundCheckExpiryLimit"));
                     }
-                    conn.close();
                 } catch (Exception E) {
                     E.printStackTrace();
                 }
@@ -292,7 +289,7 @@ public class DeleteClient extends JFrame implements ActionListener {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    Connection conn = DriverManager.getConnection(url, user_name, passWord);
+                	Connection conn = DatabaseConnection.getConnection();
                     Statement statement = conn.createStatement();
                     String query = "delete from client where ClientID = '" + choiceEMPID.getSelectedItem() + "'";
                     int rowsDeleted = statement.executeUpdate(query);
@@ -304,7 +301,6 @@ public class DeleteClient extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(this, "Client ID not found!",
                             "Error", JOptionPane.ERROR_MESSAGE);
                     }
-                    conn.close();
                     setVisible(false);
                     new ClientDashboard();
 

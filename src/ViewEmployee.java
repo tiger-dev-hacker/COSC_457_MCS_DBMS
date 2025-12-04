@@ -10,9 +10,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class ViewEmployee extends JFrame implements ActionListener {
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+    
     JTable table;
     Choice choiceEMP;
     JButton searchbtn, view_all, update, back, assign_job;
@@ -57,9 +55,9 @@ public class ViewEmployee extends JFrame implements ActionListener {
         choiceEMP.setBackground(new Color(248, 250, 252));
         choiceEMP.setForeground(new Color(30, 30, 30));
         add(choiceEMP);
+    	Connection conn = DatabaseConnection.getConnection();
 
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from employee");
             while (resultSet.next()) {
@@ -185,7 +183,7 @@ public class ViewEmployee extends JFrame implements ActionListener {
         if (e.getSource() == searchbtn) {
             String query = "select * from employee where EmployeeID = '" + choiceEMP.getSelectedItem() + "'";
             try {
-                Connection conn = DriverManager.getConnection(url, user_name, passWord);
+            	Connection conn = DatabaseConnection.getConnection();
                 Statement statement = conn.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 table.setModel(DatabaseUtils.buildTableModel(resultSet));
@@ -193,8 +191,9 @@ public class ViewEmployee extends JFrame implements ActionListener {
                 E.printStackTrace();
             }
         } else if (e.getSource() == view_all) {
+        	Connection conn = DatabaseConnection.getConnection();
+
             try {
-                Connection conn = DriverManager.getConnection(url, user_name, passWord);
                 Statement statement = conn.createStatement();
                 ResultSet resultSet = statement.executeQuery("select * from employee");
                 table.setModel(DatabaseUtils.buildTableModel(resultSet));

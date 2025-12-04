@@ -8,9 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class UpdateJob extends JFrame implements ActionListener {
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+
 
     JTextField job_name, job_length, contract_id;
     JLabel tempid;
@@ -104,9 +102,10 @@ public class UpdateJob extends JFrame implements ActionListener {
         styleTextField(contract_id, fieldBg, fieldText);
         add(contract_id);
 
+		Connection conn = DatabaseConnection.getConnection();
+
         // Load data
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM job WHERE JobID='" + number + "'");
             if (rs.next()) {
@@ -237,9 +236,10 @@ public class UpdateJob extends JFrame implements ActionListener {
             String jName = job_name.getText().trim();
             String jLength = job_length.getText().trim();
             String contractID = contract_id.getText().trim();
-
+            
+            Connection conn = DatabaseConnection.getConnection();
             try {
-                Connection conn = DriverManager.getConnection(url, user_name, passWord);
+				
                 Statement statement = conn.createStatement();
                 statement.executeUpdate("UPDATE job SET JobName='" + jName +
                         "', JobLength='" + jLength + "', ContractID='" + contractID +

@@ -7,9 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class ViewJob extends JFrame implements ActionListener {
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+
 
     JTable table;
     Choice choiceEMP;
@@ -58,8 +56,8 @@ public class ViewJob extends JFrame implements ActionListener {
         choiceEMP.setBackground(new Color(248, 250, 252));
         choiceEMP.setForeground(new Color(30, 30, 30));
         add(choiceEMP);
-
-        try (Connection conn = DriverManager.getConnection(url, user_name, passWord);
+        Connection conn = DatabaseConnection.getConnection();
+        try (
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM job")) {
             while (rs.next()) {
@@ -192,7 +190,8 @@ public class ViewJob extends JFrame implements ActionListener {
     }
 
     private void loadTable(String query) {
-        try (Connection conn = DriverManager.getConnection(url, user_name, passWord);
+    	Connection conn = DatabaseConnection.getConnection();
+        try (
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 

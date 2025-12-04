@@ -7,9 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class UpdateContract extends JFrame implements ActionListener {
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+
 
     JTextField startDateField, endDateField, budgetField, federalWageField, clientIDField, signatureDateField;
     JLabel contractIDLabel;
@@ -173,7 +171,7 @@ public class UpdateContract extends JFrame implements ActionListener {
 
     private void loadContractData() {
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM contract WHERE ContractID='" + contractNumber + "'");
 
@@ -190,7 +188,6 @@ public class UpdateContract extends JFrame implements ActionListener {
                 endDateField.setText(formatDate(rs.getString("EndDate"), mysqlFormat, displayFormat));
                 signatureDateField.setText(formatDate(rs.getString("SignatureDate"), mysqlFormat, displayFormat));
             }
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading contract data: " + e.getMessage(),
@@ -300,7 +297,7 @@ public class UpdateContract extends JFrame implements ActionListener {
                 String federalWage = federalWageField.getText().trim();
                 String clientID = clientIDField.getText().trim();
 
-                Connection conn = DriverManager.getConnection(url, user_name, passWord);
+				Connection conn = DatabaseConnection.getConnection();
                 String query = "UPDATE contract SET StartDate=?, EndDate=?, Budget=?, FederalWageScale=?, ClientID=?, SignatureDate=? WHERE ContractID=?";
                 PreparedStatement pst = conn.prepareStatement(query);
                 pst.setString(1, startDate);
@@ -311,7 +308,6 @@ public class UpdateContract extends JFrame implements ActionListener {
                 pst.setString(6, signatureDate);
                 pst.setString(7, contractNumber);
                 pst.executeUpdate();
-                conn.close();
 
                 JOptionPane.showMessageDialog(this, "Contract updated successfully!");
                 setVisible(false);

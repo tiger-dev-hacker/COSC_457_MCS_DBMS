@@ -118,10 +118,7 @@ public class AddJob extends JFrame {
         }
 
         try {
-            String user_name = "root";
-            String passWord = "Keyboard30%$";
-            String url = "jdbc:mysql://localhost:3306/mcs";
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
 
             String query = "INSERT INTO Job (JobName, JobLength, ContractID) VALUES (?, ?, ?)";
             PreparedStatement pst = conn.prepareStatement(query);
@@ -137,7 +134,6 @@ public class AddJob extends JFrame {
                 contract_id.setText("");
             }
 
-            conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());

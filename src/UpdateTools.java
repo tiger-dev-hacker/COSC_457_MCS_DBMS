@@ -9,9 +9,7 @@ import java.sql.Statement;
 
 public class UpdateTools extends JFrame implements ActionListener {
 
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+
 
     JTextField tool_name, tool_manifest;
     JLabel tempid;
@@ -138,7 +136,7 @@ public class UpdateTools extends JFrame implements ActionListener {
 
     private void loadToolData() {
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM tool WHERE ToolID='" + number + "'");
 
@@ -225,7 +223,7 @@ public class UpdateTools extends JFrame implements ActionListener {
             String manifest = tool_manifest.getText().trim();
 
             try {
-                Connection conn = DriverManager.getConnection(url, user_name, passWord);
+				Connection conn = DatabaseConnection.getConnection();
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(
                         "UPDATE tool SET ToolName='" + name + "', ToolManifest='" + manifest +

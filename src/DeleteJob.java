@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DeleteJob extends JFrame implements ActionListener {
-	String user_name = "root"; 
-	String passWord = "Keyboard30%$";
-	String url = "jdbc:mysql://localhost:3306/mcs";
+	
     Choice choiceEMPID;
     JButton delete, back;
     public DeleteJob(){
@@ -27,7 +25,7 @@ public class DeleteJob extends JFrame implements ActionListener {
         add(choiceEMPID);
 
         try{
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
    			Statement statement = conn.createStatement();            
             ResultSet resultSet = statement.executeQuery("select * from job");
             while (resultSet.next()){
@@ -67,7 +65,7 @@ public class DeleteJob extends JFrame implements ActionListener {
         add(textContractID);
 
         try {
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
    			Statement statement = conn.createStatement();         
             ResultSet resultSet = statement.executeQuery("select * from job where JobID = '"+ choiceEMPID.getSelectedItem() + "'");
             while (resultSet.next()){
@@ -84,7 +82,7 @@ public class DeleteJob extends JFrame implements ActionListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 try{
-                	Connection conn = DriverManager.getConnection(url, user_name, passWord);
+					Connection conn = DatabaseConnection.getConnection();
            			Statement statement = conn.createStatement();         
                     ResultSet resultSet = statement.executeQuery("select * from job where JobID = '"+choiceEMPID.getSelectedItem()+"'");
                     while (resultSet.next()) {
@@ -138,7 +136,7 @@ public class DeleteJob extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==delete){
             try {
-            	Connection conn = DriverManager.getConnection(url, user_name, passWord);
+				Connection conn = DatabaseConnection.getConnection();
        			Statement statement = conn.createStatement();         
                 String query = "delete from job where JobID = '"+choiceEMPID.getSelectedItem()+"'";
                 int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()

@@ -179,10 +179,7 @@ public class HREmployee extends JFrame {
 				}
 
 				try {
-					String user_name = "root";
-					String passWord = "Keyboard30%$";
-					String url = "jdbc:mysql://localhost:3306/mcs";
-					Connection conn = DriverManager.getConnection(url, user_name, passWord);
+					Connection conn = DatabaseConnection.getConnection();
 
 					String query = "INSERT INTO Employee (SSN, gender, Fname, Mname, Lname, phone_number, salary) " +
 							"VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -212,7 +209,6 @@ public class HREmployee extends JFrame {
 						salary.setText("");
 					}
 
-					conn.close();
 				} catch (Exception exception) {
 					exception.printStackTrace();
 					JOptionPane.showMessageDialog(btnNewButton, "Error: " + exception.getMessage());

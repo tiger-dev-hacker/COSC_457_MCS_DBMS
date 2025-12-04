@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DeleteEmployee extends JFrame implements ActionListener {
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+   
     Choice choiceEMPID;
     JButton delete, back;
 
@@ -58,8 +56,9 @@ public class DeleteEmployee extends JFrame implements ActionListener {
         choiceEMPID.setForeground(new Color(30, 30, 30));
         image.add(choiceEMPID);
 
+		Connection conn = DatabaseConnection.getConnection();
+
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from employee");
             while (resultSet.next()) {
@@ -97,10 +96,11 @@ public class DeleteEmployee extends JFrame implements ActionListener {
         styleValueLabel(textPhone, valueBg, valueText);
         image.add(textPhone);
 
+
         // Load initial employee data
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
             Statement statement = conn.createStatement();
+
             ResultSet resultSet = statement.executeQuery("select * from employee where EmployeeID = '" + choiceEMPID.getSelectedItem() + "'");
             while (resultSet.next()) {
                 textName.setText(resultSet.getString("Fname"));
@@ -115,7 +115,7 @@ public class DeleteEmployee extends JFrame implements ActionListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 try {
-                    Connection conn = DriverManager.getConnection(url, user_name, passWord);
+					Connection conn = DatabaseConnection.getConnection();
                     Statement statement = conn.createStatement();
                     ResultSet resultSet = statement.executeQuery("select * from employee where EmployeeID = '" + choiceEMPID.getSelectedItem() + "'");
                     while (resultSet.next()) {
@@ -218,8 +218,9 @@ public class DeleteEmployee extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == delete) {
+			Connection conn = DatabaseConnection.getConnection();
+
             try {
-                Connection conn = DriverManager.getConnection(url, user_name, passWord);
                 Statement statement = conn.createStatement();
                 String query = "delete from employee where EmployeeID = '" + choiceEMPID.getSelectedItem() + "'";
                 int rowsDeleted = statement.executeUpdate(query);

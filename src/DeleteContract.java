@@ -10,11 +10,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DeleteContract extends JFrame implements ActionListener {
-	String user_name = "root"; 
-	String passWord = "Keyboard30%$";
-	String url = "jdbc:mysql://localhost:3306/mcs";
+	
     Choice choiceEMPID;
     JButton delete, back;
+	Connection conn = DatabaseConnection.getConnection();
+
     public DeleteContract(){
 
         JLabel label = new JLabel("Contract ID");
@@ -27,7 +27,6 @@ public class DeleteContract extends JFrame implements ActionListener {
         add(choiceEMPID);
 
         try{
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();            
             ResultSet resultSet = statement.executeQuery("select * from contract");
             while (resultSet.next()){
@@ -75,7 +74,6 @@ public class DeleteContract extends JFrame implements ActionListener {
         
         
         try {
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();         
             ResultSet resultSet = statement.executeQuery("select * from contract where ContractID = '"+ choiceEMPID.getSelectedItem() + "'");
             while (resultSet.next()){
@@ -92,7 +90,6 @@ public class DeleteContract extends JFrame implements ActionListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 try{
-                	Connection conn = DriverManager.getConnection(url, user_name, passWord);
            			Statement statement = conn.createStatement();         
                     ResultSet resultSet = statement.executeQuery("select * from contract where ContractID = '"+choiceEMPID.getSelectedItem()+"'");
                     while (resultSet.next()) {
@@ -145,7 +142,7 @@ public class DeleteContract extends JFrame implements ActionListener {
     	@Override
     	public void actionPerformed(ActionEvent e) {
     	    if (e.getSource()==delete){
-    	        try (Connection conn = DriverManager.getConnection(url, user_name, passWord);
+    	        try (
     	             Statement statement = conn.createStatement()) {
     	            
     	        	String contractID = choiceEMPID.getSelectedItem();
