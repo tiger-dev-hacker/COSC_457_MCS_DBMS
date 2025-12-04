@@ -26,9 +26,7 @@ public class FindSite extends JFrame {
     private JButton clearButton;
     private JButton backButton;
 
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+
 
     public FindSite() {
 
@@ -185,10 +183,7 @@ public class FindSite extends JFrame {
         setVisible(true);
     }
 
-    // ----------------------------------------------------------------------------------------------------
-    // 🔵 STYLE HELPERS (Same style system used in UpdateClient & FindClient)
-    // ----------------------------------------------------------------------------------------------------
-
+   
     private void styleLabel(JLabel label, Color bgColor, Color fgColor) {
         label.setForeground(fgColor);
         label.setBackground(bgColor);
@@ -282,7 +277,7 @@ public class FindSite extends JFrame {
         }
 
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query.toString());
 
             for (int i = 0; i < parameters.size(); i++)
@@ -308,7 +303,6 @@ public class FindSite extends JFrame {
 
             rs.close();
             pstmt.close();
-            conn.close();
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this,

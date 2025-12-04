@@ -11,9 +11,7 @@ import java.sql.Statement;
 
 public class ViewTools extends JFrame implements ActionListener {
 
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+  
 
     JTable table;
     Choice choiceEMP;
@@ -66,8 +64,9 @@ public class ViewTools extends JFrame implements ActionListener {
         choiceEMP.setForeground(new Color(30, 30, 30));
         add(choiceEMP);
 
+		Connection conn = DatabaseConnection.getConnection();
+
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
             Statement statement = conn.createStatement();
 
             ResultSet rs = statement.executeQuery("SELECT * FROM tool");
@@ -207,7 +206,7 @@ public class ViewTools extends JFrame implements ActionListener {
 
     private void loadTable(String query) {
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(query);
 

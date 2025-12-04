@@ -130,10 +130,8 @@ public class AddSite extends JFrame {
                 }
 
                 try {
-                    String user_name = "root";
-                    String passWord = "Keyboard30%$";
-                    String url = "jdbc:mysql://localhost:3306/mcs";
-                    Connection conn = DriverManager.getConnection(url, user_name, passWord);
+                  
+					Connection conn = DatabaseConnection.getConnection();
 
                     String query = "INSERT INTO Site (SiteName, EscortLimit, ClientID) VALUES (?, ?, ?)";
 
@@ -153,7 +151,6 @@ public class AddSite extends JFrame {
                         client_id.setText("");
                     }
 
-                    conn.close();
                 } catch (Exception exception) {
                     exception.printStackTrace();
                     JOptionPane.showMessageDialog(btnNewButton,

@@ -205,6 +205,8 @@ public class AddContract extends JFrame {
         String clientID = clientIDField.getText().trim();
         String signatureDateInput = signatureDateField.getText().trim();
 
+		Connection conn = DatabaseConnection.getConnection();
+
         try {
             SimpleDateFormat userFormat = new SimpleDateFormat("MM/dd/yyyy");
             SimpleDateFormat mysqlFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -214,10 +216,6 @@ public class AddContract extends JFrame {
             String endDate = mysqlFormat.format(userFormat.parse(endDateInput));
             String signatureDate = mysqlFormat.format(userFormat.parse(signatureDateInput));
 
-            String user_name = "root";
-            String passWord = "Keyboard30%$";
-            String url = "jdbc:mysql://localhost:3306/mcs";
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
 
             String query = "INSERT INTO Contract (StartDate, EndDate, Budget, FederalWageScale, ClientID, SignatureDate) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
@@ -241,7 +239,6 @@ public class AddContract extends JFrame {
                 clientIDField.setText("");
                 signatureDateField.setText("");
             }
-            conn.close();
         } catch (ParseException pe) {
             JOptionPane.showMessageDialog(btnRegister,
                     "Invalid date format. Please use MM/DD/YYYY",

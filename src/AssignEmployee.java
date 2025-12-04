@@ -101,10 +101,8 @@ public class AssignEmployee extends JFrame {
 				}
 				
 				try {
-					String user_name = "root";
-					String passWord = "Keyboard30%$";
-					String url = "jdbc:mysql://localhost:3306/mcs";
-					Connection conn = DriverManager.getConnection(url, user_name, passWord);
+					
+					Connection conn = DatabaseConnection.getConnection();
 
 					String query = "INSERT INTO Works_on (EmployeeID, JobID) " +
 							"VALUES (?, ?)";
@@ -126,7 +124,6 @@ public class AssignEmployee extends JFrame {
 					}
 
 					pst.close();
-					conn.close();
 				} catch (Exception exception) {
 					exception.printStackTrace();
 					JOptionPane.showMessageDialog(btnNewButton, 

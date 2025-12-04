@@ -8,9 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class UpdateSite extends JFrame implements ActionListener {
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+   
 
     JTextField site_name, escort_limit, client_id;
     JLabel tempid;
@@ -106,7 +104,7 @@ public class UpdateSite extends JFrame implements ActionListener {
 
         // Load data
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from site where SiteID = '" + number + "'");
             if (resultSet.next()) {
@@ -243,7 +241,7 @@ public class UpdateSite extends JFrame implements ActionListener {
             String ClientID = client_id.getText().trim();
 
             try {
-                Connection conn = DriverManager.getConnection(url, user_name, passWord);
+				Connection conn = DatabaseConnection.getConnection();
                 Statement statement = conn.createStatement();
                 statement.executeUpdate(
                         "UPDATE site SET SiteName='" + Sname + "', EscortLimit='" +

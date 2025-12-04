@@ -91,9 +91,30 @@ public class MainDashboard extends JFrame {
                 button.setBackground(bgColor.brighter());
             }
         });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                DatabaseConnection.close();
+            }
+        });
     }
 
     public static void main(String[] args) {
-        new MainDashboard();
-    }
+    	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            DatabaseConnection.close();
+            System.out.println("Database connection closed on JVM shutdown.");
+        }));
+    	
+    	SwingUtilities.invokeLater(() -> {
+            LoginDialog loginDialog = new LoginDialog(null);
+            loginDialog.setVisible(true);
+            
+            if (loginDialog.isSucceeded()) {
+                // Your existing main frame code
+                MainDashboard mainFrame = new MainDashboard();
+                mainFrame.setVisible(true);
+            } else {
+                System.exit(0);
+            }
+        });    
+    	}
 }

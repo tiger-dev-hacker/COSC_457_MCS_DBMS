@@ -123,11 +123,10 @@ public class AddClients extends JFrame {
 					return;
 				}
 
+				 Connection conn = DatabaseConnection.getConnection();
+
 				try {
-					String user_name = "root";
-					String passWord = "Keyboard30%$";
-					String url = "jdbc:mysql://localhost:3306/mcs";
-					Connection conn = DriverManager.getConnection(url, user_name, passWord);
+					
 
 					String query = "INSERT INTO Client (ClientName, BackgroundCheckExpiryLimit) " +
 							"VALUES (?, ?)";
@@ -147,7 +146,6 @@ public class AddClients extends JFrame {
 						client_bcel.setText("");
 					}
 
-					conn.close();
 				} catch (Exception exception) {
 					exception.printStackTrace();
 					JOptionPane.showMessageDialog(btnNewButton,

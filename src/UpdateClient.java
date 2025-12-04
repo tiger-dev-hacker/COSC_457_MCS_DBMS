@@ -9,9 +9,7 @@ import java.sql.Statement;
 
 public class UpdateClient extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	String user_name = "root";
-	String passWord = "Keyboard30%$";
-	String url = "jdbc:mysql://localhost:3306/mcs";
+
 
 	JTextField client_name, client_bcel;
 	JLabel tempid;
@@ -109,7 +107,7 @@ public class UpdateClient extends JFrame implements ActionListener {
 
 		// Load existing data
 		try {
-			Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
 			Statement statement = conn.createStatement();
 			String query = "select * from client where ClientID = '" + number + "'";
 			ResultSet resultSet = statement.executeQuery(query);
@@ -117,7 +115,6 @@ public class UpdateClient extends JFrame implements ActionListener {
 				client_name.setText(resultSet.getString("ClientName"));
 				client_bcel.setText(resultSet.getString("BackgroundCheckExpiryLimit"));
 			}
-			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "Error loading client data: " + e.getMessage(),
@@ -269,13 +266,12 @@ public class UpdateClient extends JFrame implements ActionListener {
 			}
 
 			try {
-				Connection conn = DriverManager.getConnection(url, user_name, passWord);
+				Connection conn = DatabaseConnection.getConnection();
 				Statement statement = conn.createStatement();
 				String query = "update client set ClientName = '" + Cname + 
 					"', BackgroundCheckExpiryLimit = '" + Cbcel + 
 					"' where ClientID = '" + number + "'";
 				statement.executeUpdate(query);
-				conn.close();
 				JOptionPane.showMessageDialog(this, "Client details updated successfully!",
 					"Success", JOptionPane.INFORMATION_MESSAGE);
 				setVisible(false);

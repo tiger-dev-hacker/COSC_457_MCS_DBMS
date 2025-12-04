@@ -20,9 +20,7 @@ public class FindJob extends JFrame {
     private JButton searchButton;
     private JButton clearButton;
     private JButton backButton;
-    String user_name = "root";
-    String passWord = "Keyboard30%$";
-    String url = "jdbc:mysql://localhost:3306/mcs";
+    
     
     public FindJob() {
         setTitle("Find Job");
@@ -184,7 +182,7 @@ public class FindJob extends JFrame {
 
         // Execute query
         try {
-            Connection conn = DriverManager.getConnection(url, user_name, passWord);
+			Connection conn = DatabaseConnection.getConnection();
 
             PreparedStatement pstmt = conn.prepareStatement(query.toString());
 
@@ -221,7 +219,6 @@ public class FindJob extends JFrame {
 
             rs.close();
             pstmt.close();
-            conn.close();
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this,

@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DeleteSite extends JFrame implements ActionListener {
-	String user_name = "root"; 
-	String passWord = "Keyboard30%$";
-	String url = "jdbc:mysql://localhost:3306/mcs";
+
     Choice choiceEMPID;
     JButton delete, back;
     public DeleteSite(){
@@ -26,8 +24,9 @@ public class DeleteSite extends JFrame implements ActionListener {
         choiceEMPID.setBounds(200,50,150,30);
         add(choiceEMPID);
 
+		Connection conn = DatabaseConnection.getConnection();
+
         try{
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();            
             ResultSet resultSet = statement.executeQuery("select * from site");
             while (resultSet.next()){
@@ -64,8 +63,9 @@ public class DeleteSite extends JFrame implements ActionListener {
         textLabel.setBounds(200,200,100,30);
         add(textLabel);
 
+		conn = DatabaseConnection.getConnection();
+
         try {
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();         
             ResultSet resultSet = statement.executeQuery("select * from site where SiteID = '"+ choiceEMPID.getSelectedItem() + "'");
             while (resultSet.next()){
@@ -81,8 +81,9 @@ public class DeleteSite extends JFrame implements ActionListener {
         choiceEMPID.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+				Connection conn = DatabaseConnection.getConnection();
+
                 try{
-                	Connection conn = DriverManager.getConnection(url, user_name, passWord);
            			Statement statement = conn.createStatement();         
                     ResultSet resultSet = statement.executeQuery("select * from site where SiteID = '"+choiceEMPID.getSelectedItem()+"'");
                     while (resultSet.next()) {
@@ -134,8 +135,9 @@ public class DeleteSite extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==delete){
+			Connection conn = DatabaseConnection.getConnection();
+
             try {
-            	Connection conn = DriverManager.getConnection(url, user_name, passWord);
        			Statement statement = conn.createStatement();         
                 String query = "delete from site where SiteID = '"+choiceEMPID.getSelectedItem()+"'";
                 int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()

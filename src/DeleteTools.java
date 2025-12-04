@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DeleteTools extends JFrame implements ActionListener {
-	String user_name = "root"; 
-	String passWord = "Keyboard30%$";
-	String url = "jdbc:mysql://localhost:3306/mcs";
+
     Choice choiceEMPID;
     JButton delete, back;
     public DeleteTools(){
@@ -26,8 +24,9 @@ public class DeleteTools extends JFrame implements ActionListener {
     	choiceEMPID.setBounds(200, 50, 200, 30);
     	add(choiceEMPID);
 
+		Connection conn = DatabaseConnection.getConnection();
+
         try{
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();            
             ResultSet resultSet = statement.executeQuery("select * from tool");
             while (resultSet.next()){
@@ -57,8 +56,9 @@ public class DeleteTools extends JFrame implements ActionListener {
         textPhone.setFont(new Font("Tahoma", Font.PLAIN, 14));
         add(textPhone);
 
+	    conn = DatabaseConnection.getConnection();
+
         try {
-        	Connection conn = DriverManager.getConnection(url, user_name, passWord);
    			Statement statement = conn.createStatement();         
             ResultSet resultSet = statement.executeQuery("select * from tool where ToolID = '"+ choiceEMPID.getSelectedItem() + "'");
             while (resultSet.next()){
@@ -73,7 +73,7 @@ public class DeleteTools extends JFrame implements ActionListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 try{
-                	Connection conn = DriverManager.getConnection(url, user_name, passWord);
+					Connection conn = DatabaseConnection.getConnection();
            			Statement statement = conn.createStatement();         
                     ResultSet resultSet = statement.executeQuery("select * from tool where ToolID = '"+choiceEMPID.getSelectedItem()+"'");
                     while (resultSet.next()) {
@@ -124,8 +124,9 @@ public class DeleteTools extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==delete){
+			Connection conn = DatabaseConnection.getConnection();
+
             try {
-            	Connection conn = DriverManager.getConnection(url, user_name, passWord);
        			Statement statement = conn.createStatement();         
                 String query = "delete from tool where ToolID = '"+choiceEMPID.getSelectedItem()+"' ";
                 int rowsDeleted = statement.executeUpdate(query);  // ← Use executeUpdate()
